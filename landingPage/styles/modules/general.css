@@ -3,6 +3,10 @@
 
 :root{
     --verdeMusgo: #A8B5A2;
+    --VerdeMain: #006060;
+    --VerdeAgua: #1ABC9C;
+    --BlancoGris: #F6F5F2;
+    --BlacoHeader: #F8F9F8;
 }
 
 *{
