@@ -16,8 +16,14 @@ footer {
     font-size: 1.2rem;
 }
 
+
+.logo_marca {
+    height: 75px;
+    width: auto;
+
+}
 .logo_marca img {
-    height: 100px;
+    height: 100%;
     width: auto;
 }
 
