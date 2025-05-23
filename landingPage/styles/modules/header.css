@@ -3,7 +3,7 @@ header {
     color: white;
     height: 75px;
     display: flex;
-    border-bottom:2px solid var(--GrisAzulado);
+    border-bottom: 3px solid rgba(0, 0, 0, 0.25);
 }
 
 header .contenedor {
@@ -71,7 +71,7 @@ text-decoration: none;
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: var(--fondoAzulOscuro);
+        background-color: var(--BlacoHeader);
         position: absolute;
         top: 75px;
         left: 0;
@@ -90,7 +90,8 @@ text-decoration: none;
         transform: scaleY(1);
         opacity: 1;
         pointer-events: auto;
-        border-bottom: 2px solid var(--GrisAzulado);
+        border-bottom: 3px solid rgba(0, 0, 0, 0.25);
+
     }
 
     .ir_a_la_app--mobile {
