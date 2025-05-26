@@ -37,6 +37,12 @@
     width: 140px;
     padding: 30px;
     border-radius: 20px;
+    transition: all .3s ease;
+}
+.card_servicio:hover{
+
+    transform: scale(1.1);
+    box-shadow: 0 0 20px 2px var(--VerdeMain) ;
 }
 
 .card_servicio i{
