@@ -1,5 +1,54 @@
 #testimonios{
+    padding: 4rem 0;
     border-radius: 0 0 30px 30px ;
+}
 
+.testimonio_card{
+    background-color: var(--VerdeMain);
+    color: white;
+    width: 350px;
+    height: 300px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 30px;
 
+}
+.testimonios_slider{
+    margin-top: 50px;
+    width: 80vw; /* o el 80% de tu contenedor */
+    height: auto;
+    overflow: hidden; /* Esto oculta cualquier contenido que se desborde */
+    
+}
+.testimonios_slider_track{
+    display: flex;
+    gap: 30px;
+    animation: scroll 75s linear infinite;
+    -webkit-animation: scroll 75s linear infinite;
+    width: calc(350px * 12);
+}
+.testimonio_mensaje{
+    
+    font-size: 14px;
+}
+
+.nombre_calificacion{
+    display: flex;
+    justify-content: space-between;
+}
+.checked{
+    color:#FFFF00;
+}
+
+@keyframes scroll{
+    0%{
+        transform: translateX(0);
+        -webkit-transform: translateX(0);
+    }
+    100%{
+        transform: translateX(calc(-350px * 6));
+        -webkit-transform: translateX(calc(-350px * 6));
+    }
 }
