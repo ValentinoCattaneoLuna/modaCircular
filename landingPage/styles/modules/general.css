@@ -20,6 +20,10 @@
 html,body{
     scroll-behavior: smooth;
 }
+
+body{
+    background-color: var(--BlancoGris);
+}
 .contenedor{
     width: 80%;
     margin: auto;
