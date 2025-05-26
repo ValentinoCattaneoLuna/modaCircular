@@ -4,7 +4,7 @@
 }
 
 .elementos_hero{
-    background-color: #006060;
+    background-color:var(--VerdeMain);
     color: white;
 
     display: flex;
