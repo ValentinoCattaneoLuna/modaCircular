@@ -11,6 +11,7 @@
     flex-direction: row;
     border-radius: 20px;
     padding:30px;
+    justify-content: space-evenly;
 }
 
 
@@ -40,10 +41,7 @@ line-height: 1;
 }
 .lado_izquierdo .botonera_hero{
     display: flex;
-    flex-direction: row;
-    justify-content:end ;
     gap: 15px;
-
 }
 
 .lado_derecho img{
