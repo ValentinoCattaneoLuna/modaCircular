@@ -1,0 +1,38 @@
+[
+  {
+    "id_testimonio": 1,
+    "nombre_testimonio": "Lucía Fernández",
+    "mensaje_testimonio": "La app me pareció súper fácil de usar. Pude regalar unas prendas que ya no usaba y encima terminé conociendo gente recopada del barrio.",
+    "cantidad_estrellas": 5
+  },
+  {
+    "id_testimonio": 2,
+    "nombre_testimonio": "Martín Salas",
+    "mensaje_testimonio": "Publicar mi ropa fue rapidísimo, y al toque me contactaron. Me encanta que se priorice el cuidado del planeta con algo tan simple como compartir ropa.",
+    "cantidad_estrellas": 5
+  },
+  {
+    "id_testimonio": 3,
+    "nombre_testimonio": "Florencia Giménez",
+    "mensaje_testimonio": "Venía guardando ropa hace años sin saber qué hacer, y con Moda Circular pude darle otra vida. Todo re claro y fácil, la recomiendo.",
+    "cantidad_estrellas": 5
+  },
+  {
+    "id_testimonio": 4,
+    "nombre_testimonio": "Nahuel Ríos",
+    "mensaje_testimonio": "Intercambié unas camperas que no usaba y me llevé unas re buenas. La experiencia fue genial, cero vueltas, todo por WhatsApp.",
+    "cantidad_estrellas": 5
+  },
+  {
+    "id_testimonio": 5,
+    "nombre_testimonio": "Camila Torres",
+    "mensaje_testimonio": "Me encantó la idea. Pude renovar mi placard sin gastar un peso. Todo muy intuitivo y bien pensado. Ojalá más gente se sume.",
+    "cantidad_estrellas": 5
+  },
+  {
+    "id_testimonio": 6,
+    "nombre_testimonio": "Federico Blanco",
+    "mensaje_testimonio": "Ya usé la app tres veces y siempre fue una experiencia positiva. Es genial saber que lo que a uno no le sirve, a otro sí.",
+    "cantidad_estrellas": 5
+  }
+]
