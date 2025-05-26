@@ -1,6 +1,9 @@
 footer {
     background-color: var(--verdeMusgo);
     padding: 1rem 0;
+    position: sticky;
+    bottom: 0;
+    z-index: -1;
 }
 
 .elementos_footer {
