@@ -1,0 +1,54 @@
+#beneficios{
+    margin-top: 2rem;
+
+}
+
+.elementos_beneficios{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.info_beneficios{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.info_beneficios .desc_about ul{
+    list-style: disc inside;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+.image_beneficios img{
+    max-width: 450px;
+    max-height: 450px;
+}
+
+
+
+
+@media (max-width:1220px){
+
+    .elementos_hero{
+        flex-direction: column;
+    }
+    .image_beneficios{
+        display: none;
+    }
+    .info_beneficios{
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+    }
+ .info_beneficios .desc_about ul{
+    text-align: left;
+    margin: auto;
+    width: fit-content ;
+ }   
+ .info_beneficios .desc_about ul li{
+    width: fit-content;
+ }
+
+}

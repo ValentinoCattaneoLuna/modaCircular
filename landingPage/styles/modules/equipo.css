@@ -1,0 +1,74 @@
+#equipo {
+
+    margin-top: 4rem;
+}
+
+.elementos_equipo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    text-align: center;
+}
+.elementos_equipo .desc_section{
+        margin-top: -15px;
+        max-width: 600px;
+}
+.galeria_equipo {
+
+    display: flex;
+    justify-content: center;
+    gap: 3.5rem;
+    align-items: center;
+    flex-flow: row wrap;
+
+}
+
+.card_equipo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    width: 200px;
+    border-radius: 20px;
+    transition: all .3s ease;
+}
+
+.card_equipo_image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    background-color: var(--VerdeMain);
+}
+.card_equipo_image img{
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+    background-color: white;
+
+}
+.card_equipo_name{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: white;
+    height: 30px;
+    border-radius:0 0 20px 20px ;
+    border-bottom: 1px solid var(--VerdeMain);
+    border-left: 1px solid var(--VerdeMain);
+    border-right: 1px solid var(--VerdeMain);
+}
+.card_equipo_name h6{
+    font-size: .8rem;
+}
+
+.card_equipo:hover{
+    transform: scale(1.1);
+    box-shadow: 0 0 20px 2px var(--VerdeMain) ;
+}

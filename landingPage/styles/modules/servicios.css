@@ -1,0 +1,53 @@
+#servicios {
+
+    margin-top: 4rem;
+}
+
+.elementos_servicios {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    text-align: center;
+}
+.elementos_servicios .subtitle_section{
+        margin-top: -15px;
+        max-width: 600px;
+}
+.galeria_servicios {
+
+    display: flex;
+    justify-content: center;
+    gap: 3.5rem;
+    align-items: center;
+    flex-flow: row wrap;
+
+}
+
+.card_servicio {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    background-color: var(--VerdeMain);
+    color: white;
+    height: 150px;
+    width: 140px;
+    padding: 30px;
+    border-radius: 20px;
+    transition: all .3s ease;
+}
+.card_servicio:hover{
+
+    transform: scale(1.1);
+    box-shadow: 0 0 20px 2px var(--VerdeMain) ;
+}
+
+.card_servicio i{
+    font-size: 3rem;
+}
+.card_servicio h5{
+    font-size: 1rem;
+}

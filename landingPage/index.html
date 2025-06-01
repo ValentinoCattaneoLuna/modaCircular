@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/index.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <title>Document</title>
 </head>
 
@@ -13,7 +16,7 @@
     <header>
         <div class="contenedor">
             <div class="logo">
-                <img src="" alt="">
+                <img src="./assets/img/modaCircularLogo.webp" alt="">
             </div>
 
             <nav class="navbar">
@@ -21,17 +24,17 @@
                     <li><a href="#servicios">Servicios</a></li>
                     <li><a href="#equipo">Equipo</a></li>
                     <li><a href="#testimonios">Testimonios</a></li>
-                    <li><a href="faq.html">F.A.Q.</a></li>
-                    <li><a href="guia_de_uso.html">Guia</a></li>
+                    <li><a href="./pages/faq.html">F.A.Q.</a></li>
+                    <li><a href="./pages/useguide.html">Guia</a></li>
                 </ul>
-                <button class="boton_violeta ir_a_la_app--mobile">
+                <button class="boton_verde_claro ir_a_la_app--mobile">
                     <span>Ir a la app</span>
                 </button>
             </nav>
 
 
             <div class="botonera">
-                <button class="ir_a_la_app--desktop boton_violeta">
+                <button class="ir_a_la_app--desktop boton_verde_claro">
                     <span>Ir a la app</span>
                 </button>
                 <div class=" hamburguesa" id="toggleMenu">
@@ -54,19 +57,23 @@
                             <h1>
                                 Dale una nueva vida a tu ropa.
                             </h1>
+                            <div class="subtitle_section">
+                                <h2>Intercambiá, vendé o regalá lo que ya no usás.</h2>
+                            </div>
                         </div>
-                        <div class="subtitle_section">
-                            <h2>Intercambiá, vendé o regalá lo que ya no usás.</h2>
-                        </div>
+
                         <div class="desc_section">
-                            <p>Creamos una plataforma segura y simple para que puedas darle un nuevo uso a esa ropa que
-                                ya no usás. Ayudá a otros, liberá espacio y contribuí a un consumo más consciente.</p>
+                            <p>Creamos una plataforma segura y simple para que puedas <br> darle un nuevo uso a esa ropa
+                                que
+                                ya no usás. Ayudá a <br> otros, liberá espacio y contribuí a un consumo más
+                                <br>consciente.
+                            </p>
                         </div>
                         <div class="botonera_hero">
-                            <button class="boton_violeta">
+                            <button class="boton_verde_claro">
                                 <span>Ir a la app</span>
                             </button>
-                            <button class="boton_violeta">
+                            <button class="boton_transparante_borde" onclick="window.location.href ='./pages/useguide.html' ">
                                 <span>Como empezar</span>
                             </button>
                         </div>
@@ -74,7 +81,7 @@
 
                     <div class="lado_derecho">
                         <div class="imagen_hero">
-                            <img src="" alt="">
+                            <img src="./assets/img/online_shopping.svg" alt="">
                         </div>
                     </div>
 
@@ -97,6 +104,26 @@
                     </div>
 
                     <div class="galeria_servicios">
+                        <div class="card_servicio">
+                            <i class='bx bx-time'></i>
+                            <h5>Rápida publicación</h5>
+                        </div>
+                        <div class="card_servicio">
+                            <i class='bx bx-filter-alt'></i>
+                            <h5>Filtros funcionales</h5>
+                        </div>
+                        <div class="card_servicio">
+                            <i class='bx bx-group'></i>
+                            <h5>Comunidad activa</h5>
+                        </div>
+                        <div class="card_servicio">
+                            <i class='bx bx-money-withdraw'></i>
+                            <h5>Recuperá dinero</h5>
+                        </div>
+                        <div class="card_servicio">
+                            <i class='bx bx-universal-access'></i>
+                            <h5>Interfaz accesible</h5>
+                        </div>
                     </div>
                 </div>
 
@@ -105,16 +132,18 @@
 
         <section id="beneficios">
             <div class="contenedor">
-                <div class="elementos_about">
-                    <div class="info_about">
+                <div class="elementos_beneficios">
+                    <div class="info_beneficios">
 
                         <div class="title_section">
                             <h2>Los beneficios de sumarte:</h2>
                         </div>
 
                         <div class="desc_about">
-                            <p>Moda Circular es más que una plataforma: es una forma de contribuir a un futuro mejor.
-                                Estos son algunos beneficios:</p>
+                            <p>Moda Circular es más que una <br> plataforma: es una forma de contribuir a un futuro
+                                mejor.
+                                <br> Estos son algunos beneficios:
+                            </p>
                             <ul>
                                 <li>Reducís el desperdicio textil</li>
                                 <li>Liberás espacio en tu hogar</li>
@@ -125,18 +154,18 @@
                         </div>
 
                         <div class="botonera_beneficios">
-                            <button> DUDAS </button>
+                            <button class="boton_verde_claro"  onclick="window.location.href ='./pages/useguide.html' "> DUDAS </button>
                         </div>
 
                     </div>
 
                     <div class="image_beneficios">
-                        <img src="" alt="">
+                        <img src="./assets/img/nature_benefits.svg" alt="">
                     </div>
                 </div>
             </div>
         </section>
-        <section class="equipo">
+        <section id="equipo">
 
             <div class="contenedor">
                 <div class="elementos_equipo">
@@ -151,8 +180,30 @@
                         </p>
                     </div>
                     <div class="galeria_equipo">
-
-
+                        <div class="card_equipo">
+                            <div class="card_equipo_image">
+                                <img src="./assets/img/valen_dev.png" alt="">
+                            </div>
+                            <div class="card_equipo_name">
+                                <h6>Valentino Cattaneo Luna</h6>
+                            </div>
+                        </div>
+                        <div class="card_equipo">
+                            <div class="card_equipo_image">
+                                <img src="./assets/img/mate_dev.png" alt="">
+                            </div>
+                            <div class="card_equipo_name">
+                                <h6>Mateo Maestromey</h6>
+                            </div>
+                        </div>
+                        <div class="card_equipo">
+                            <div class="card_equipo_image">
+                                <img src="./assets/img/lauti_dev.png" alt="">
+                            </div>
+                            <div class="card_equipo_name">
+                                <h6>Lautaro Roldan</h6>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -168,7 +219,7 @@
                         <h2>¿Qué dicen quienes ya la usan?</h2>
                     </div>
                     <div class="desc_section">
-                        <p>Muchas personas ya transformaron su forma de consumir moda. Estas son algunas de sus
+                        <p>Muchas personas ya transformaron su forma de consumir moda. <br>Estas son algunas de sus
                             experiencias:</p>
                     </div>
 
@@ -192,7 +243,7 @@
                     <span>Moda Circular</span>
                 </div>
                 <div class="logo_marca">
-                    <img src="" alt="">
+                    <img src="./assets/img/modaCircularLogo.webp" alt="">
                 </div>
                 <div class="copyright">
                     <span>©ModaCircular 2025</span>

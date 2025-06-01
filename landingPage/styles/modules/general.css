@@ -3,16 +3,60 @@
 
 :root{
     --verdeMusgo: #A8B5A2;
+    --VerdeMain: #006060;
+    --VerdeAgua: #1ABC9C;
+    --BlancoGris: #F6F5F2;
+    --BlacoHeader: #F8F9F8;
+    
 }
 
 *{
     box-sizing: border-box;
     padding: 0;
-    margin: auto;
+    margin: 0;
     font-family: "Poppins", sans-serif;    
 }
 
+html,body{
+    scroll-behavior: smooth;
+}
+
+body{
+    background-color: var(--BlancoGris);
+}
 .contenedor{
     width: 80%;
     margin: auto;
+}
+
+button{
+    transition: all .3s ease;
+
+}
+
+button:hover{
+    transform: scale(1.1);
+}
+
+.boton_verde_claro{
+    color: white;
+    padding: 7px 35px;
+    border-radius: 30px;
+    font-size: 1rem;
+    background-color: #1ABC9C;
+    border: none;
+    cursor: pointer;
+}
+
+.boton_transparante_borde{
+    color: white;
+    
+    padding: 7px 35px;
+    border-radius: 30px;
+    font-size: 1rem;
+
+    background:transparent;
+    border: 1px solid white;
+    cursor: pointer;
+
 }
