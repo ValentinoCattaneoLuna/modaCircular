@@ -3,8 +3,8 @@ import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import {connectDB} from './config/db.ts';
-import authRutes from './routes/auth.routes'
-import publicacionesRoutes from '.routes/publicaciones.routes'
+// import authRutes from './routes/auth.routes'
+// import publicacionesRoutes from '.routes/publicaciones.routes'
 import type { Request, Response, NextFunction } from 'express';
 
 //cfg servidor
@@ -27,8 +27,8 @@ app.use(morgan('dev'));
 connectDB();
 
 //montado de rutas
-app.use('/api/auth', authRutes);
-app.use('/api/publicaciones', publicacionesRoutes);
+app.use('/api/auth',/*authRutes*/);
+app.use('/api/publicaciones', /*publicacionesRoutes*/);
 
 
 //verificaciones del servidor
@@ -40,4 +40,8 @@ app.get('/api/health', (_req, res) => {
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Algo salió mal!' });
+})
+
+;app.listen(PORT, () => {
+  console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`);
 });
