@@ -3,11 +3,17 @@ import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import {connectDB} from './config/db.ts';
-// import authRutes from './routes/auth.routes'
-// import publicacionesRoutes from '.routes/publicaciones.routes'
+import authRutes from './routes/auth.routes'
+//import publicacionesRoutes from '.routes/publicaciones.routes'
 import type { Request, Response, NextFunction } from 'express';
+import dotenv from 'dotenv';
+
+
+//conexion a la db
+connectDB();
 
 //cfg servidor
+dotenv.config();
 const app = express();
 const PORT = process.env.SERVER_PORT || 4000;
 
@@ -23,12 +29,11 @@ app.use(cors({
 app.use(helmet());
 app.use(morgan('dev'));
 
-//conexion a la db
-connectDB();
 
 //montado de rutas
-app.use('/api/auth',/*authRutes*/);
-app.use('/api/publicaciones', /*publicacionesRoutes*/);
+app.use('/api/auth', authRutes);
+//app.use('/api/publicaciones', publicacionesRoutes);
+
 
 
 //verificaciones del servidor
