@@ -27,7 +27,7 @@ export const crearPublicacion = async (req: AuthenticatedRequest, res: Response)
         res.status(400).json({ error: 'Faltan datos obligatorios' });
         return;
     }
-   
+
     const connection = await pool.getConnection();
     try {
         await connection.beginTransaction;
@@ -66,7 +66,9 @@ export const crearPublicacion = async (req: AuthenticatedRequest, res: Response)
         await connection.rollback();
         console.error(error);
         res.status(500).json({ error: 'Error al crear publicación' });
-    }
+    }finally {
+    connection.release();
+}
 
 }
 
@@ -113,7 +115,7 @@ export const verPublicaciones = async (req: AuthenticatedRequest, res: Response)
 
 //ver publicacion por id
 export const verPublicacionPorId = async (req: Request, res: Response) => {
-    const id_publicacion  = req.params.id_publicacion;
+    const id_publicacion = req.params.id_publicacion;
 
     try {
         const [resultado] = await pool.query(`
@@ -159,4 +161,57 @@ export const verPublicacionPorId = async (req: Request, res: Response) => {
         console.error('❌ Error al obtener la publicación:', error);
         res.status(500).json({ error: 'Error al obtener la publicación' });
     }
+};
+
+
+//eliminar publicacion por id
+export const eliminarPublicacionPorId = async (req: AuthenticatedRequest, res: Response) => {
+    const id_publicacion = req.params.id_publicacion;
+
+    const connection = await pool.getConnection();
+    try {
+        await connection.beginTransaction();
+
+        // 1. Buscar la publicación
+        const [rows] = await connection.execute(
+            `SELECT id_usuario FROM Publicaciones WHERE id_publicacion = ? LIMIT 1`,
+            [id_publicacion]
+        );
+
+        const publicaciones = rows as { id_usuario: number }[];
+
+        if (publicaciones.length === 0) {
+            connection.release();
+            res.status(404).json({ error: 'Publicación no encontrada' });
+            return
+        }
+
+        const publicacion = publicaciones[0];
+
+        // 2. Verificar si es del usuario autenticado
+        if (publicacion?.id_usuario !== req.user?.id) {
+            connection.release();
+            res.status(403).json({ error: 'No tienes permiso para eliminar esta publicación' });
+            return
+        }
+
+        // 3. Eliminar
+        await connection.execute(
+            `DELETE FROM Publicaciones WHERE id_publicacion = ?`,
+            [id_publicacion]
+        );
+
+        await connection.commit();
+        connection.release();
+
+        res.status(200).json({ message: 'Publicación eliminada correctamente' });
+
+    } catch (error) {
+        await connection.rollback();
+        connection.release();
+        console.error('❌ Error al eliminar publicación:', error);
+        res.status(500).json({ error: 'Error al eliminar publicación' });
+    }finally {
+    connection.release();
+}
 };
