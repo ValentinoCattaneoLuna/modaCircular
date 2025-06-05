@@ -66,9 +66,9 @@ export const crearPublicacion = async (req: AuthenticatedRequest, res: Response)
         await connection.rollback();
         console.error(error);
         res.status(500).json({ error: 'Error al crear publicación' });
-    }finally {
-    connection.release();
-}
+    } finally {
+        connection.release();
+    }
 
 }
 
@@ -211,7 +211,17 @@ export const eliminarPublicacionPorId = async (req: AuthenticatedRequest, res: R
         connection.release();
         console.error('❌ Error al eliminar publicación:', error);
         res.status(500).json({ error: 'Error al eliminar publicación' });
-    }finally {
-    connection.release();
-}
+    } finally {
+        connection.release();
+    }
 };
+
+
+//editar publicacion por id
+export const editarPublicacionPorId = async (req: AuthenticatedRequest, res: Response) => {
+    const connection = await pool.getConnection();
+    const id_publicacion = req.params.id_publicacion;
+    //TODO
+  
+};
+
