@@ -4,7 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import {connectDB} from './config/db.ts';
 import authRutes from './routes/auth.routes'
-//import publicacionesRoutes from '.routes/publicaciones.routes'
+import publicacionesRoutes from './routes/publicaciones.routes';
 import type { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 
@@ -32,8 +32,7 @@ app.use(morgan('dev'));
 
 //montado de rutas
 app.use('/api/auth', authRutes);
-//app.use('/api/publicaciones', publicacionesRoutes);
-
+app.use('/api/publicaciones', publicacionesRoutes);
 
 
 //verificaciones del servidor
