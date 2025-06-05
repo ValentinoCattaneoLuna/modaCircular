@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { crearPublicacion, verPublicaciones, verPublicacionPorId, eliminarPublicacionPorId } from "../controllers/publicaciones.controller";
+import { crearPublicacion, verPublicaciones, verPublicacionPorId, eliminarPublicacionPorId, editarPublicacionPorId} from "../controllers/publicaciones.controller";
 import { authenticate } from "../middleware/auth";
 
 
@@ -19,6 +19,6 @@ router.get('/:id_publicacion',verPublicacionPorId)
 router.delete('/:id_publicacion',authenticate, eliminarPublicacionPorId)
 
 //ruta para editar publicacion por id
-// router.patch('/:id',authenticate, editarPublicacionPorId)
+router.patch('/:id',authenticate, editarPublicacionPorId)
 
 export default router;
