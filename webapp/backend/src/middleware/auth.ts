@@ -25,7 +25,8 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
 
         //valida que exista el token
         if (!token) {
-            return res.status(401).json({ error: 'Token no proporcionado' });
+            res.status(401).json({ error: 'Token no proporcionado' });
+            return
         }
 
         // Verifica y decodifica el token JWT usando la clave secreta, 
@@ -34,13 +35,14 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
 
         // Verificar si el usuario aún existe en la base de datos
         const [users] = await pool.execute(
-            'SELECT id, email, nombre FROM Usuarios WHERE id = ?',
+            'SELECT id_usuario as id, mail as email, nombre FROM Usuarios WHERE id_usuario = ?',
             [decoded.id]
         );
 
         //si el largo es 0, no se encontro al usuario
         if ((users as any).length === 0) {
-            return res.status(401).json({ error: 'Usuario no encontrado' });
+            res.status(401).json({ error: 'Usuario no encontrado' });
+            return
         }
         //asigna el primer usuario encontrado 
         req.user = (users as any)[0];
@@ -52,7 +54,8 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
     }
     catch (error) {
         console.error(error);
-        return res.status(403).json({ error: 'Token inválido o expirado' });
+        res.status(403).json({ error: 'Token inválido o expirado' });
+        return
     }
 
 };
