@@ -64,7 +64,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
       case "intercambio":
         return "Intercambio"
       default:
-        return `$${product.price.toFixed(2)}`
+        return `$${product.price}`
     }
   }
 
