@@ -10,7 +10,8 @@ dotenv.config();
 export const verUsuarios = async (req: Request, res: Response) => {
     try {
         const [usuarios] = await pool.query(`
-            SELECT id_usuario, nombre, apellido, mail, username, telefono, ubicacion
+            SELECT id_usuario, nombre, apellido, mail, username, telefono, ubicacion,  avatar,
+            bio, fecha_creacion AS joinDate
             from Usuarios
             Order by id_usuario
     `);
@@ -28,7 +29,8 @@ export const verUsuarioPorId = async (req: Request, res: Response) => {
 
     try {
         const [resultado] = await pool.query(`
-            SELECT id_usuario, nombre, apellido, mail, username, telefono, ubicacion
+            SELECT id_usuario, nombre, apellido, mail, username, telefono, ubicacion, avatar,
+            bio, fecha_creacion AS joinDate
             from Usuarios where id_usuario = ?
             Order by id_usuario
     `, [id_usuario]);
