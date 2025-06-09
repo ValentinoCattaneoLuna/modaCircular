@@ -194,7 +194,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
               onValueChange={(value) => setFormData({ ...formData, publicationType: value })}
               required
             >
-              <SelectTrigger className="bg-white cursor-pointer">
+              <SelectTrigger className="bg-white cursor-pointer border-gray-300 focus:ring-[#22c55e]">
                 <SelectValue placeholder="¿Qué quieres hacer con tu prenda?" />
               </SelectTrigger>
               <SelectContent className="bg-white">
@@ -220,7 +220,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
                   <img
                     src={preview}
                     alt={`Preview ${index + 1}`}
-                    className="w-full h-full object-cover rounded-lg border-2 border-gray-200"
+                    className="w-full h-full object-cover rounded-lg border-2 border-gray-400"
                   />
                   <Button
                     type="button"
@@ -270,6 +270,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
+                className="border-gray-300 focus:ring-[#22c55e]"
               />
             </div>
 
@@ -278,7 +279,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
               <Textarea
                 id="description"
                 placeholder="Describe tu prenda: estado, detalles, historia..."
-                className="min-h-[100px]"
+                className="min-h-[100px] border-gray-300 focus:ring-[#22c55e]"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               />
@@ -293,8 +294,9 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
                 value={formData.category}
                 onValueChange={(value) => setFormData({ ...formData, category: value })} 
                 required
+              
               >
-                <SelectTrigger className="bg-white cursor-pointer">
+                <SelectTrigger className="bg-white cursor-pointer border-gray-300 focus:ring-[#22c55e]">
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
@@ -303,7 +305,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
                       key={cat.id_categoria}
                       value={String(cat.id_categoria)}
                       
-                      className="bg-white hover:bg-green-50 cursor-pointer"
+                      className="bg-white hover:bg-green-50 cursor-pointer "
                     >
                       {cat.categoria}
                     </SelectItem>
@@ -319,7 +321,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
                 onValueChange={(value) => setFormData({ ...formData, size: value })}
                 required
               >
-                <SelectTrigger className="bg-white cursor-pointer">
+                <SelectTrigger className="bg-white cursor-pointer border-gray-300 focus:ring-[#22c55e]">
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
@@ -343,7 +345,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
                 onValueChange={(value) => setFormData({ ...formData, condition: value })}
                 required
               >
-                <SelectTrigger className="bg-white hover:cursor-pointer">
+                <SelectTrigger className="bg-white hover:cursor-pointer border-gray-300 focus:ring-[#22c55e]">
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
                 <SelectContent className="bg-white ">
@@ -358,6 +360,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
             <div className="space-y-2">
               <Label htmlFor="color">Color</Label>
               <Input
+                className="border-gray-300 focus:ring-[#22c55e]"
                 id="color"
                 placeholder="Ej: Rojo"
                 value={formData.color}
@@ -376,7 +379,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
                   id="price"
                   type="number"
                   placeholder="20000"
-                  className="pl-8"
+                  className="pl-8 border-gray-300 focus:ring-[#22c55e]"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                 />
@@ -385,7 +388,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
           )}
 
           {/* Botones */}
-          <div className="flex justify-end space-x-3 pt-4 border-t">
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-300">
             <Button
               type="button"
               className="bg-red-600 text-white cursor-pointer transition-all hover:scale-110 focus:scale-90"
