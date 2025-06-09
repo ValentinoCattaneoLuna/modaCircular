@@ -21,7 +21,7 @@ interface Product {
   condition: string
   size: string
   brand: string
-  type: "venta" | "donacion" | "intercambio"
+  type: "Venta" | "Donación" | "Intercambio"
   category: string
   color: string
   location: string
@@ -37,9 +37,9 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
   const getTypeIcon = () => {
     switch (product.type) {
-      case "donacion":
+      case "Donación":
         return <Gift className="w-3 h-3" />
-      case "intercambio":
+      case "Intercambio":
         return <ArrowRightLeft className="w-3 h-3" />
       default:
         return null
@@ -48,9 +48,9 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
   const getTypeColor = () => {
     switch (product.type) {
-      case "donacion":
+      case "Donación":
         return "bg-blue-100 text-blue-800"
-      case "intercambio":
+      case "Intercambio":
         return "bg-purple-100 text-purple-800"
       default:
         return "bg-green-100 text-green-800"
@@ -59,9 +59,9 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
   const getTypeText = () => {
     switch (product.type) {
-      case "donacion":
+      case "Donación":
         return "Gratis"
-      case "intercambio":
+      case "Intercambio":
         return "Intercambio"
       default:
         return `$${product.price}`
@@ -109,7 +109,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
                 <Badge className={`flex items-center gap-1 ${getTypeColor()}`}>
                   {getTypeIcon()}
                   <span className="text-xs">
-                    {product.type === "donacion" ? "Gratis" : product.type === "intercambio" ? "Intercambio" : "Venta"}
+                    {product.type === "Donación" ? "Gratis" : product.type === "Intercambio" ? "Intercambio" : "Venta"}
                   </span>
                 </Badge>
                 <Badge variant="outline" className="text-xs">
@@ -133,7 +133,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
                   <div className="flex items-center space-x-2 cursor-pointer hover:opacity-80 ">
                     <Avatar className="w-6 h-6 ">
                       <AvatarImage src={product.user.avatar || "/placeholder.svg"} />
-                      <AvatarFallback>{product.user.name[0]}</AvatarFallback>
+                      <AvatarFallback>{product.user.username[0]}</AvatarFallback>
                     </Avatar>
                     <span className="text-sm text-gray-600">@{product.user.username}</span>
                   </div>
@@ -158,10 +158,11 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group border-0">
       <CardContent className="p-0">
+
         <div className="relative">
           <Link href={`/product/${product.id}`}>
             <img
-              src={product.image || "/placeholder.svg"}
+              src={ product.image?.split(",")[0] || "/placeholder.svg"}
               alt={product.title}
               className="w-full h-64 object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300"
             />
@@ -171,7 +172,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
           <Badge className={`absolute top-3 left-3 flex items-center gap-1 ${getTypeColor()}`}>
             {getTypeIcon()}
             <span className="text-xs font-medium">
-              {product.type === "donacion" ? "Gratis" : product.type === "intercambio" ? "Intercambio" : "Venta"}
+              {product.type === "Donación" ? "Gratis" : product.type === "Intercambio" ? "Intercambio" : "Venta"}
             </span>
           </Badge>
 
@@ -190,12 +191,13 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
         <div className="p-4 space-y-3 bg-white ">
           {/* Usuario y precio */}
+
           <div className="flex items-center justify-between">
             <Link href={`/user/${product.user.username}`}>
               <div className="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity">
                 <Avatar className="w-7 h-7">
                   <AvatarImage src={product.user.avatar || "/placeholder.svg"} />
-                  <AvatarFallback className="text-xs">{product.user.name[0]}</AvatarFallback>
+                  <AvatarFallback className="text-xs">{product.user.username[0]}</AvatarFallback>
                 </Avatar>
                 <span className="text-sm text-gray-600 font-medium">@{product.user.username}</span>
               </div>
