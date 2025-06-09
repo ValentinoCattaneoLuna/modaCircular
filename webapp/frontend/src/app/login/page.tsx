@@ -41,6 +41,11 @@ export default function LoginPage() {
           secure: true,
           sameSite: 'Lax',
         });
+        Cookies.set('user_id', data.token.user.id, {
+          expires: 7,
+          secure: true,
+          sameSite: 'Lax',
+        });
         router.push('/feed');
       }
 
