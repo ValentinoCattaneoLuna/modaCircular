@@ -1,0 +1,50 @@
+import type { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import pool from '../config/db';
+import dotenv from 'dotenv';
+import e from 'express';
+
+dotenv.config();
+
+export const verUsuarios = async (req: Request, res: Response) => {
+    try {
+        const [usuarios] = await pool.query(`
+            SELECT id_usuario, nombre, apellido, mail, username, telefono, ubicacion
+            from Usuarios
+            Order by id_usuario
+    `);
+        res.status(200).json(usuarios);
+
+    } catch (error) {
+        console.error('❌ Error al obtener publicaciones:', error);
+        res.status(500).json({ error: 'Error al obtener publicaciones' });
+    }
+};
+
+
+export const verUsuarioPorId = async (req: Request, res: Response) => {
+    const id_usuario = req.params.id_usuario;
+
+    try {
+        const [resultado] = await pool.query(`
+            SELECT id_usuario, nombre, apellido, mail, username, telefono, ubicacion
+            from Usuarios where id_usuario = ?
+            Order by id_usuario
+    `, [id_usuario]);
+
+        const usuarios = resultado as any[];
+
+        if (usuarios.length === 0) {
+            res.status(404).json({ error: 'Usuario no encontrado' });
+            return
+        }
+
+        const usuario = usuarios[0];
+        res.status(200).json(usuario);
+
+    } catch (error) {
+        console.error('❌ Error al obtener el usuario:', error);
+        res.status(500).json({ error: 'Error al obtener el usuario' });
+    }
+};
