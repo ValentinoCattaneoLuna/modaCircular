@@ -99,7 +99,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({
       token,
       user: {
-        id: user.id,
+        id: user.id_usuario,
         email: user.mail,
         nombre: user.nombre,
         username: user.username
