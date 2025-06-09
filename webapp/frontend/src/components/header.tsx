@@ -56,7 +56,8 @@ export function Header() {
               </Button>
             </Link>
 
-            <Link href="/notifications">
+            
+            {/* <Link href="/notifications">
               <Button variant="ghost" size="icon" className="text-gray-600 hover:text-primary-custom relative">
                 <Bell className="w-5 h-5" />
                 {unreadNotifications > 0 && (
@@ -65,7 +66,7 @@ export function Header() {
                   </Badge>
                 )}
               </Button>
-            </Link>
+            </Link> */}
 
             <Button
               onClick={() => setIsPublishModalOpen(true)}
