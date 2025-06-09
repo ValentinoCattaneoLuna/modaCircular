@@ -192,6 +192,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
             <Select
               value={formData.publicationType}
               onValueChange={(value) => setFormData({ ...formData, publicationType: value })}
+              required
             >
               <SelectTrigger className="bg-white cursor-pointer">
                 <SelectValue placeholder="¿Qué quieres hacer con tu prenda?" />
@@ -290,7 +291,8 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
               <Label htmlFor="category">Categoría *</Label>
               <Select
                 value={formData.category}
-                onValueChange={(value) => setFormData({ ...formData, category: value })}
+                onValueChange={(value) => setFormData({ ...formData, category: value })} 
+                required
               >
                 <SelectTrigger className="bg-white cursor-pointer">
                   <SelectValue placeholder="Seleccionar" />
@@ -300,6 +302,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
                     <SelectItem
                       key={cat.id_categoria}
                       value={String(cat.id_categoria)}
+                      
                       className="bg-white hover:bg-green-50 cursor-pointer"
                     >
                       {cat.categoria}
@@ -314,6 +317,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
               <Select
                 value={formData.size}
                 onValueChange={(value) => setFormData({ ...formData, size: value })}
+                required
               >
                 <SelectTrigger className="bg-white cursor-pointer">
                   <SelectValue placeholder="Seleccionar" />
@@ -337,6 +341,7 @@ export function PublishModal({ isOpen, onClose }: PublishModalProps) {
               <Select
                 value={formData.condition}
                 onValueChange={(value) => setFormData({ ...formData, condition: value })}
+                required
               >
                 <SelectTrigger className="bg-white hover:cursor-pointer">
                   <SelectValue placeholder="Seleccionar" />
