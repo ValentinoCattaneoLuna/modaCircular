@@ -11,7 +11,6 @@ import { PublishModal } from "./publish-modal"
 
 export function Header() {
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false)
-  const unreadNotifications = 3 // Mock data
 
   return (
     <>
