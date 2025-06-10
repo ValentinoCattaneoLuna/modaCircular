@@ -199,7 +199,7 @@ export function AboutMeTab({ user, isOwnProfile }: AboutMeTabProps) {
           </div>
 
           {/* Teléfono */}
-          {isOwnProfile && (
+          
             <div className="space-y-2">
               <Label className="text-sm font-bold text-gray-900 flex items-center gap-2">
                 <Phone className="w-4 h-4" />
@@ -219,7 +219,7 @@ export function AboutMeTab({ user, isOwnProfile }: AboutMeTabProps) {
                 <p className="text-gray-600">{user.telefono}</p>
               )}
             </div>
-          )}
+          
 
           {/* Fecha de registro */}
           <div className="space-y-2">

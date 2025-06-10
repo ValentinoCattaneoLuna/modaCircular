@@ -143,7 +143,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
               </div>
 
               <div className="flex items-center justify-between">
-                <Link href={`/user/${product.user.username}`}>
+                <Link href={`/user/username/${product.user.username}`}>
                   <div className="flex items-center space-x-2 cursor-pointer hover:opacity-80 ">
                     <Avatar className="w-6 h-6 ">
                       <AvatarImage src={product.user.avatar || "/placeholder.svg"} />
@@ -207,7 +207,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
           {/* Usuario y precio */}
 
           <div className="flex items-center justify-between">
-            <Link href={`/user/${product.user.username}`}>
+            <Link href={`/user/username/${product.user.username}`}>
               <div className="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity">
                 <Avatar className="w-7 h-7">
                   <AvatarImage src={product.user.avatar || "/placeholder.svg"} />
