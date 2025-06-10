@@ -36,9 +36,13 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
   }
 
   const handleContact = () => {
+    if (!user.telefono) {
+      //alerta para decir que el usuario no tiene un numero de telefono valido
+      return
+    }
     // Aquí iría la lógica para abrir WhatsApp o chat
     const message = `¡Hola ${user.nombre}! Te escribo desde Moda Circular.`
-    const whatsappUrl = `https://wa.me/${user.telefono?.replace(/\s/g, "")}?text=${encodeURIComponent(message)}`
+    const whatsappUrl = `https://wa.me/${user.telefono.replace(/[^\d]/g, "")}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, "_blank")
   }
 
