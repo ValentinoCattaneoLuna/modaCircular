@@ -118,17 +118,17 @@ export function AboutMeTab({ user, isOwnProfile }: AboutMeTabProps) {
             <div className="flex gap-2">
               {isEditing ? (
                 <>
-                  <Button size="sm" onClick={handleSave} className="bg-primary-custom hover:bg-primary-custom/90">
+                  <Button size="sm" onClick={handleSave} className="bg-primary-custom cursor-pointer">
                     <Save className="w-4 h-4 mr-2" />
                     Guardar
                   </Button>
-                  <Button size="sm" variant="outline" onClick={handleCancel}>
+                  <Button size="sm" variant="outline" onClick={handleCancel} className="border-gray-300 cursor-pointer hover:bg-red-500 hover:text-white">
                     <X className="w-4 h-4 mr-2" />
                     Cancelar
                   </Button>
                 </>
               ) : (
-                <Button size="sm" variant="outline" onClick={() => setIsEditing(true)}>
+                <Button size="sm" variant="outline" onClick={() => setIsEditing(true)} className="border-gray-300 cursor-pointer hover:bg-gray-300 ">
                   <Edit className="w-4 h-4 mr-2" />
                   Editar
                 </Button>
