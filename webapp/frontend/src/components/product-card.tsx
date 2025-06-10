@@ -17,6 +17,7 @@ interface Product {
     name: string
     avatar: string
     username: string
+    telefono: string
   }
   condition: string
   size: string
@@ -34,6 +35,19 @@ interface ProductCardProps {
 
 export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false)
+
+    const handleContact = () => {
+      if(!product.user.telefono){
+        //alerta para decir que el usuario no tiene un numero de telefono valido
+        return
+      }
+    const message = `¡Hola ${product.user.name} ! Te escribo desde Moda Circular por tu publicación de: ${product.title}..`
+    const whatsappUrl = `https://wa.me/${product.user.telefono.replace(/[^\d]/g, "")}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, "_blank")
+  }
+
+
+
 
   const getTypeIcon = () => {
     switch (product.type) {
@@ -228,12 +242,12 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
               </div>
             </div>
           </div>
-
           {/* Botón de contacto */}
           <Button
             variant="outline"
             size="sm"
             className="w-full text-primary-custom border-primary-custom hover:bg-primary-custom hover:text-white transition-colors cursor-pointer"
+            onClick={handleContact}
           >
             <MessageCircle className="w-4 h-4 mr-2" />
             Contactar
