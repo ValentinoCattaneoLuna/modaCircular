@@ -60,7 +60,7 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
         if (!res.ok) throw new Error('Error al cargar publicaciones')
         const data: ProductoBackend[] = await res.json()
 
-        setProducts(data.filter(pub => pub.id_usuario === Number(user_id) ))
+        setProducts(data.filter(pub => pub.id_usuario === user.id_usuario ))
 
         // Después de obtener las publicaciones, hacemos la solicitud para cada usuario
       } catch (err) {
