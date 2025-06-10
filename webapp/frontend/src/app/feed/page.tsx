@@ -26,6 +26,7 @@ interface UsuarioBackend {
     id_usuario: number
     username: string
     avatar: string | null
+    telefono: string
 }
 
 export default function FeedPage() {
@@ -71,6 +72,7 @@ export default function FeedPage() {
                         fetchUserData(product.id_usuario)
                     }
                 })
+
             } catch (err) {
                 console.error(err)
                 setError(true)
@@ -105,6 +107,7 @@ export default function FeedPage() {
                                         name: `${product.nombre_usuario} ${product.apellido_usuario}`,
                                         avatar: user.avatar || '', // Usar avatar si está disponible
                                         username: user.username || '', // Usar username del usuario
+                                        telefono:  user.telefono || ""   // Usar telefono si está disponible
                                     },
                                     condition: product.estado,
                                     size: product.talle,
