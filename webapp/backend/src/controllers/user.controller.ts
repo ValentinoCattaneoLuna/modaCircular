@@ -16,7 +16,7 @@ interface AuthenticatedRequest extends Request {
 export const verUsuarios = async (req: Request, res: Response) => {
     try {
         const [usuarios] = await pool.query(`
-            SELECT id_usuario, nombre, apellido, mail, username, telefono, ubicacion,  avatar,
+            SELECT id_usuario, nombre, apellido, mail, username,nacimiento, telefono, ubicacion,  avatar,
             bio, fecha_creacion AS joinDate
             from Usuarios
             Order by id_usuario
@@ -35,7 +35,7 @@ export const verUsuarioPorId = async (req: Request, res: Response) => {
 
     try {
         const [resultado] = await pool.query(`
-            SELECT id_usuario, nombre, apellido, mail, username, telefono, ubicacion, avatar,
+            SELECT id_usuario, nombre, apellido, mail, username, nacimiento, telefono, ubicacion, avatar,
             bio, fecha_creacion AS joinDate
             from Usuarios where id_usuario = ?
             Order by id_usuario
@@ -61,7 +61,7 @@ export const verUsuarioPorId = async (req: Request, res: Response) => {
 export const actualizarUsuarioId = async (req: AuthenticatedRequest, res: Response) => {
     
     const connection = await pool.getConnection();
-    const { bio, nacimiento, ubicacion, telefono } = req.body
+    const { bio, nacimiento, telefono,ubicacion } = req.body
 
     if (!bio || !nacimiento || !ubicacion  || !telefono) {
       res.status(400).json({ error: 'Faltan campos obligatorios' });
