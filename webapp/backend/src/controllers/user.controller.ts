@@ -56,7 +56,32 @@ export const verUsuarioPorId = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Error al obtener el usuario' });
     }
 };
+export const verUsuarioPorUsername = async (req: Request, res: Response) => {
+    const username = req.params.username;
 
+    try {
+        const [resultado] = await pool.query(`
+            SELECT id_usuario, nombre, apellido, mail, username, nacimiento, telefono, ubicacion, avatar,
+            bio, fecha_creacion AS joinDate
+            from Usuarios where username = ?
+            Order by username
+    `, [username]);
+
+        const usuarios = resultado as any[];
+
+        if (usuarios.length === 0) {
+            res.status(404).json({ error: 'Usuario no encontrado' });
+            return
+        }
+
+        const usuario = usuarios[0];
+        res.status(200).json(usuario);
+
+    } catch (error) {
+        console.error('❌ Error al obtener el usuario:', error);
+        res.status(500).json({ error: 'Error al obtener el usuario' });
+    }
+};
 
 export const actualizarUsuarioId = async (req: AuthenticatedRequest, res: Response) => {
     
