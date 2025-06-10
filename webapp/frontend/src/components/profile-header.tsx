@@ -84,11 +84,10 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
               <div className="flex gap-2">
                 {isOwnProfile ? (
                   <>
-                    <Button variant="outline" size="sm" className="border-2 border-gray-200 bg-white hover:bg-gray-300 cursor-pointer font-bold text-gray-900">
-                      <Edit className="w-4 h-4 mr-2 text-black" />
-                      Editar perfil
-                    </Button>
-                    <Button variant="outline" size="sm" className="border-2 border-gray-200 bg-white hover:bg-gray-300 cursor-pointer font-bold text-gray-900">
+
+                    <Button variant="outline" size="sm" className="border-2 border-gray-200 bg-white hover:bg-gray-300 cursor-pointer font-bold text-gray-900"
+                    //onClick={} //implementar funcion para guardar en el portapapeles la window.location.href
+                    >
                       <Share2 className="w-4 h-4 mr-2 text-black" />
                       Compartir
                     </Button>
@@ -103,13 +102,7 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
                       <MessageCircle className="w-4 h-4 mr-2" />
                       Contactar
                     </Button>
-                    <Button
-                      variant={isFollowing ? "outline" : "default"}
-                      onClick={() => setIsFollowing(!isFollowing)}
-                      size="sm"
-                    >
-                      {isFollowing ? "Siguiendo" : "Seguir"}
-                    </Button>
+                
                   </>
                 )}
               </div>

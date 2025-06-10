@@ -13,6 +13,7 @@ interface IUsuario {
   apellido: string
   mail: string
   username: string
+  nacimiento: string
   telefono: string | null
   ubicacion: string | null
   avatar: string

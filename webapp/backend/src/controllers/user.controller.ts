@@ -6,11 +6,17 @@ import dotenv from 'dotenv';
 import e from 'express';
 
 dotenv.config();
-
+interface AuthenticatedRequest extends Request {
+    user?: {
+        id: number;
+        email: string;
+        nombre: string;
+    };
+}
 export const verUsuarios = async (req: Request, res: Response) => {
     try {
         const [usuarios] = await pool.query(`
-            SELECT id_usuario, nombre, apellido, mail, username, telefono, ubicacion,  avatar,
+            SELECT id_usuario, nombre, apellido, mail, username,nacimiento, telefono, ubicacion,  avatar,
             bio, fecha_creacion AS joinDate
             from Usuarios
             Order by id_usuario
@@ -29,7 +35,7 @@ export const verUsuarioPorId = async (req: Request, res: Response) => {
 
     try {
         const [resultado] = await pool.query(`
-            SELECT id_usuario, nombre, apellido, mail, username, telefono, ubicacion, avatar,
+            SELECT id_usuario, nombre, apellido, mail, username, nacimiento, telefono, ubicacion, avatar,
             bio, fecha_creacion AS joinDate
             from Usuarios where id_usuario = ?
             Order by id_usuario
@@ -50,3 +56,44 @@ export const verUsuarioPorId = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Error al obtener el usuario' });
     }
 };
+
+
+export const actualizarUsuarioId = async (req: AuthenticatedRequest, res: Response) => {
+    
+    const connection = await pool.getConnection();
+    const { bio, nacimiento, telefono,ubicacion } = req.body
+
+    if (!bio || !nacimiento || !ubicacion  || !telefono) {
+      res.status(400).json({ error: 'Faltan campos obligatorios' });
+      return
+    }
+
+
+    try {
+        
+        const id_usuario = (req as any).user.id;
+
+
+        await connection.beginTransaction();
+        const [result]: any  = await connection.execute(
+            `
+            UPDATE Usuarios 
+            SET nacimiento = ?, telefono = ?, ubicacion = ?, bio = ?
+            WHERE id_usuario = ?
+            `,
+            [nacimiento,telefono,ubicacion,bio,id_usuario]
+        )
+        await connection.commit();
+        res.status(200).json({ message: 'Usuario actualizado con exito'})
+    }
+    catch (error) {
+        await connection.rollback()
+        res.status(500).json({ error: 'Error actualizando el usuario' })
+    }finally{
+        connection.release()
+    }
+
+
+
+
+}

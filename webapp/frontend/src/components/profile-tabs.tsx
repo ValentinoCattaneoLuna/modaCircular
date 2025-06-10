@@ -10,6 +10,7 @@ interface ProfileUser {
   apellido: string,
   mail: string,
   username: string,
+  nacimiento: string,
   telefono: string | null,
   ubicacion: string | null,
   avatar: string
@@ -26,11 +27,11 @@ export function ProfileTabs({ user, isOwnProfile }: ProfileTabsProps) {
   return (
     <Tabs defaultValue="publications" className="w-full ">
       <TabsList className="grid gap-8 w-full grid-cols-2 mb-6 ;">
-        <TabsTrigger value="publications" className="flex items-center gap-2 bg-white shadow-lg" >
+        <TabsTrigger value="publications" className="flex items-center gap-2 bg-white shadow-lg cursor-pointer hover:scale-105 focus:scale-95" >
           <Grid3X3 className="w-4 h-4" />
           {isOwnProfile ? "Mis publicaciones" : "Publicaciones"}
         </TabsTrigger>
-        <TabsTrigger value="about" className="flex items-center gap-2 bg-white shadow-lg">
+        <TabsTrigger value="about" className="flex items-center gap-2 bg-white shadow-lg cursor-pointer hover:scale-105 focus:scale-95">
           <User className="w-4 h-4" />
           {isOwnProfile ? "Sobre mí" : "Acerca de"}
         </TabsTrigger>

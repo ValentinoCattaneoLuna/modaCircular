@@ -34,14 +34,14 @@ interface ProductoBackend {
   color: string
   id_usuario: number
   nombre_usuario: string
-  apellido_usuario: string
+  apellido_usuario: string,
+  publicatedAt: string
 }
 interface MyPublicationsTabProps {
   user: User
   isOwnProfile: boolean
 }
 
-// Datos mock de publicaciones
 
 
 export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps) {
@@ -75,32 +75,19 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
   }, [])
 
 
-  // const filteredPublications = products.filter((pub) => {
-  //   if (filter === "todas") return true
-  //   if (filter === "activas") return pub.status === "activa"
-  //   if (filter === "vendidas") return pub.status === "vendida"
-  //   if (filter === "pausadas") return pub.status === "pausada"
-  //   return true
-  // })
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "activa":
-        return "bg-green-100 text-green-800"
-      case "vendida":
-        return "bg-gray-100 text-gray-800"
-      case "pausada":
-        return "bg-yellow-100 text-yellow-800"
-      default:
-        return "bg-gray-100 text-gray-800"
-    }
-  }
+  const filteredPublications = products.filter((pub) => {
+    if (filter === "todas") return true
+    if (filter === "Venta") return pub.tipo_publicacion === "Venta"
+    if (filter === "Donación") return pub.tipo_publicacion === "Donación"
+    if (filter === "Intercambio") return pub.tipo_publicacion === "Intercambio"
+    return true
+  })
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case "donacion":
+      case "Donación":
         return <Gift className="w-3 h-3" />
-      case "intercambio":
+      case "Intercambio":
         return <ArrowRightLeft className="w-3 h-3" />
       default:
         return null
@@ -109,9 +96,9 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case "donacion":
+      case "Donación":
         return "bg-blue-100 text-blue-800"
-      case "intercambio":
+      case "Intercambio":
         return "bg-purple-100 text-purple-800"
       default:
         return "bg-green-100 text-green-800"
@@ -138,13 +125,13 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
             </SelectTrigger>
             <SelectContent className="bg-white border-0 shadow-lg">
               <SelectItem className="cursor-pointer hover:bg-green-50" value="todas">Todas las publicaciones</SelectItem>
-              <SelectItem className="cursor-pointer hover:bg-green-50" value="activas">Activas</SelectItem>
-              <SelectItem className="cursor-pointer hover:bg-green-50" value="vendidas">Vendidas</SelectItem>
-              <SelectItem className="cursor-pointer hover:bg-green-50" value="pausadas">Pausadas</SelectItem>
+              <SelectItem className="cursor-pointer hover:bg-green-50" value="Venta">Venta</SelectItem>
+              <SelectItem className="cursor-pointer hover:bg-green-50" value="Donación">Donación</SelectItem>
+              <SelectItem className="cursor-pointer hover:bg-green-50" value="Intercambio">Intercambio</SelectItem>
             </SelectContent>
           </Select>
           <span className="text-sm text-gray-800">
-            {products.length} de {products.length} publicaciones
+            {filteredPublications.length} de {filteredPublications.length} publicaciones
           </span>
         </div>
 
@@ -156,10 +143,10 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
       </div>
 
       {/* Grid de publicaciones */}
-      {products.length > 0 ? (
+      {filteredPublications.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((publication) => (
-            <Card key={publication.id_publicacion} className="overflow-hidden hover:shadow-lg transition-shadow">
+          {filteredPublications.map((publication) => (
+            <Card key={publication.id_publicacion} className="overflow-hidden hover:shadow-lg transition-shadow bg-white border-0 shadow-lg">
               <CardContent className="p-0">
                 <div className="relative">
                   <Link href={`/product/${publication.id_publicacion}`}>
@@ -196,16 +183,16 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
                     <div className="absolute top-2 right-2 ">
                       <DropdownMenu >
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="bg-white/80 backdrop-blur-sm hover:bg-white">
-                            <MoreHorizontal className="w-4 h-4" />
+                          <Button variant="ghost" size="icon" className="bg-white/80 backdrop-blur-sm hover:bg-white cursor-pointer">
+                            <MoreHorizontal className="w-4 h-4 " />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
+                        <DropdownMenuContent align="end" className="bg-white">
+                          <DropdownMenuItem className="cursor-pointer hover:bg-green-50">
                             <Eye className="w-4 h-4 mr-2" />
                             Ver publicación
                           </DropdownMenuItem>
-                          <DropdownMenuItem asChild>
+                          <DropdownMenuItem asChild className="cursor-pointer hover:bg-green-50">
                             <Link href={`/product/${publication.id_publicacion}/edit`}>
                               <div className="flex items-center gap-2">
                                 <Edit className="w-4 h-4 mr-2" />
@@ -213,7 +200,7 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
                               </div>
                             </Link>
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
+                          <DropdownMenuItem className="text-red-600 cursor-pointer hover:bg-green-50">
                             <Trash2 className="w-4 h-4 mr-2" />
                             Eliminar
                           </DropdownMenuItem>
@@ -247,7 +234,7 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
                   </div>
 
                   {/* Fecha */}
-                  {/* <div className="text-xs text-gray-400">Publicado el {formatDate(publication.publicatedAt)}</div> */}
+                   <div className="text-xs text-gray-400">Publicado el {formatDate(publication.publicatedAt)}</div>
                 </div>
               </CardContent>
             </Card>

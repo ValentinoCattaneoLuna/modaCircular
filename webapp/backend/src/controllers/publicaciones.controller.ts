@@ -95,7 +95,8 @@ export const verPublicaciones = async (req: AuthenticatedRequest, res: Response)
         p.color,
         DATE_FORMAT(p.fecha_publicacion, '%d/%m/%Y') AS fecha_publicacion,
         p.activo,
-        GROUP_CONCAT(fp.url_imagen ORDER BY fp.orden SEPARATOR ',') AS imagenes
+        GROUP_CONCAT(fp.url_imagen ORDER BY fp.orden SEPARATOR ',') AS imagenes,
+        p.fecha_publicacion as publicatedAt
       FROM Publicaciones p
       JOIN Usuarios u ON p.id_usuario = u.id_usuario
       JOIN tipos_publicacion tp ON p.id_tipo_publicacion = tp.id_tipo_publicacion
@@ -136,7 +137,8 @@ export const verPublicaciones = async (req: AuthenticatedRequest, res: Response)
         p.color,
         DATE_FORMAT(p.fecha_publicacion, '%d/%m/%Y') AS fecha_publicacion,
         p.activo,
-        GROUP_CONCAT(fp.url_imagen ORDER BY fp.orden SEPARATOR ',') AS imagenes
+        GROUP_CONCAT(fp.url_imagen ORDER BY fp.orden SEPARATOR ',') AS imagenes,
+        p.fecha_publicacion as publicatedAt
       FROM Publicaciones p
       JOIN Usuarios u ON p.id_usuario = u.id_usuario
       JOIN tipos_publicacion tp ON p.id_tipo_publicacion = tp.id_tipo_publicacion
