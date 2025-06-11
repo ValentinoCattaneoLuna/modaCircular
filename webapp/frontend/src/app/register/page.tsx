@@ -229,7 +229,14 @@ export default function RegisterPage() {
                             <p className="text-sm text-red-500">{apiError}</p>
                         )}
                     </form>
-
+                    <div className="text-center">
+                        <span className="text-sm text-gray-600">
+                            ¿Ya tienes una cuenta?{" "}
+                            <Link href="/login" className="text-primary-custom hover:underline font-medium">
+                                Inicia Sesión
+                            </Link>
+                        </span>
+                    </div>
 
                 </CardContent>
             </Card>
