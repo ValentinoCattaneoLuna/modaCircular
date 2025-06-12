@@ -50,26 +50,16 @@ export function Header() {
           {/* Actions */}
           <div className="flex items-center space-x-4">
             <Link href="/search">
-              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-primary-custom">
+              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-primary-custom cursor-pointer">
                 <Search className="w-5 h-5" />
               </Button>
             </Link>
 
-            
-            {/* <Link href="/notifications">
-              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-primary-custom relative">
-                <Bell className="w-5 h-5" />
-                {unreadNotifications > 0 && (
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
-                    {unreadNotifications}
-                  </Badge>
-                )}
-              </Button>
-            </Link> */}
+           
 
             <Button
               onClick={() => setIsPublishModalOpen(true)}
-              className="bg-primary-custom hover:bg-primary-custom/90 text-white transition-colors"
+              className="bg-primary-custom hover:bg-primary-custom/90 text-white transition-colors cursor-pointer"
               size="sm"
             >
               <Upload className="w-4 h-4 mr-2" />
