@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { toast } from 'sonner';
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -36,14 +37,18 @@ interface ProductCardProps {
 export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false)
 
-    const handleContact = () => {
-      if(!product.user.telefono){
-        //alerta para decir que el usuario no tiene un numero de telefono valido
-        return
-      }
-    const message = `¡Hola ${product.user.name} ! Te escribo desde Moda Circular por tu publicación de: ${product.title}..`
-    const whatsappUrl = `https://wa.me/${product.user.telefono.replace(/[^\d]/g, "")}?text=${encodeURIComponent(message)}`
-    window.open(whatsappUrl, "_blank")
+  const handleContact = () => {
+    if (!product.user.telefono) {
+      toast.error('El usuario no tiene un numero de telefono vinculado',{
+        duration:2000,
+        style:{background:'#e7000b', color:"#fff"}
+      })
+
+    } else {
+      const message = `¡Hola ${product.user.name} ! Te escribo desde Moda Circular por tu publicación de: ${product.title}..`
+      const whatsappUrl = `https://wa.me/${product.user.telefono.replace(/[^\d]/g, "")}?text=${encodeURIComponent(message)}`
+      window.open(whatsappUrl, "_blank")
+    }
   }
 
 
@@ -99,9 +104,8 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className={`absolute top-2 right-2 rounded-full ${
-                  isLiked ? "text-red-500" : "text-white"
-                } hover:bg-white/20`}
+                className={`absolute top-2 right-2 rounded-full ${isLiked ? "text-red-500" : "text-white"
+                  } hover:bg-white/20`}
                 onClick={() => setIsLiked(!isLiked)}
               >
                 <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
@@ -176,7 +180,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
         <div className="relative">
           <Link href={`/product/${product.id}`}>
             <img
-              src={ product.image?.split(",")[0] || "/placeholder.svg"}
+              src={product.image?.split(",")[0] || "/placeholder.svg"}
               alt={product.title}
               className="w-full h-64 object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300"
             />
@@ -194,9 +198,8 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
           <Button
             variant="ghost"
             size="icon"
-            className={`absolute top-3 right-3 rounded-full bg-white/80 backdrop-blur-sm ${
-              isLiked ? "text-red-500" : "text-gray-600"
-            } hover:bg-white hover:scale-110 transition-all`}
+            className={`absolute top-3 right-3 rounded-full bg-white/80 backdrop-blur-sm ${isLiked ? "text-red-500" : "text-gray-600"
+              } hover:bg-white hover:scale-110 transition-all`}
             onClick={() => setIsLiked(!isLiked)}
           >
             <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
