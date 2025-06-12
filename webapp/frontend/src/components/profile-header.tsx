@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
 import { MessageCircle, Star, Calendar, MapPin, Edit, Share2 } from "lucide-react"
-
+import {toast} from 'sonner'
 interface User {
-  
+
 
   id_usuario: number,
   nombre: string,
@@ -37,7 +37,10 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
 
   const handleContact = () => {
     if (!user.telefono) {
-      //alerta para decir que el usuario no tiene un numero de telefono valido
+      toast.error('El usuario no tiene un numero de telefono vinculado', {
+        duration: 2000,
+        style: { background: '#e7000b', color: "#fff" }
+      })
       return
     }
     // Aquí iría la lógica para abrir WhatsApp o chat
@@ -62,7 +65,7 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
               </AvatarFallback>
             </Avatar>
 
-      
+
           </div>
 
           {/* Información del perfil */}
@@ -100,13 +103,13 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
                   <>
                     <Button
                       onClick={handleContact}
-                      className="bg-primary-custom hover:bg-primary-custom/90 text-white"
+                      className="bg-primary-custom hover:bg-primary-custom/90 text-white cursor-pointer transition-all hover:scale-105 focus:scale-95"
                       size="sm"
                     >
                       <MessageCircle className="w-4 h-4 mr-2" />
                       Contactar
                     </Button>
-                
+
                   </>
                 )}
               </div>
@@ -115,7 +118,7 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
             {/* Bio */}
             <p className="text-gray-700 leading-relaxed">{user.bio}</p>
 
-          
+
           </div>
         </div>
       </CardContent>
