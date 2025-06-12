@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Header } from "@/components/header"
 import { ProductCard } from "@/components/product-card"
 import { FilterBar } from "@/components/filter-bar"
+import { Toaster } from 'sonner';
 
 interface ProductoBackend {
     id_publicacion: number
@@ -86,6 +87,7 @@ export default function FeedPage() {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            <Toaster position="top-right"/>
             <Header />
             <main className="container mx-auto px-4 py-6">
                 <FilterBar />
