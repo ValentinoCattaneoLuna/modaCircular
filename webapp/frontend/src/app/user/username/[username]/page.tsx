@@ -6,7 +6,7 @@ import { ProfileTabs } from "@/components/profile-tabs"
 import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
-
+import {Toaster} from 'sonner'
 interface UserProfilePageProps {
   params: {
     username: string
@@ -65,6 +65,7 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="container mx-auto px-4 py-6 max-w-4xl">
+        <Toaster position="top-right"/>
         <ProfileHeader user={user} isOwnProfile={false} />
         <ProfileTabs user={user} isOwnProfile={false} />
       </main>
