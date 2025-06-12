@@ -4,8 +4,11 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
-import { MessageCircle, Star, Calendar, MapPin, Edit, Share2 } from "lucide-react"
-import {toast} from 'sonner'
+import { MessageCircle, LogOut, Calendar, MapPin, Edit, Share2, Router } from "lucide-react"
+import Cookies from "js-cookie"
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+
 interface User {
 
 
@@ -29,12 +32,19 @@ interface ProfileHeaderProps {
 
 export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
   const [isFollowing, setIsFollowing] = useState(false)
+  const router = useRouter()
 
   const formatJoinDate = (dateString: string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("es-ES", { year: "numeric", month: "long" })
   }
 
+  const handleLogOut = () => {
+    Cookies.remove('token')
+    Cookies.remove('user_id')
+    router.push('/')
+
+  }
   const handleContact = () => {
     if (!user.telefono) {
       toast.error('El usuario no tiene un numero de telefono vinculado', {
@@ -43,7 +53,6 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
       })
       return
     }
-    // Aquí iría la lógica para abrir WhatsApp o chat
     const message = `¡Hola ${user.nombre}! Te escribo desde Moda Circular.`
     const whatsappUrl = `https://wa.me/${user.telefono.replace(/[^\d]/g, "")}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, "_blank")
@@ -97,6 +106,11 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
                     >
                       <Share2 className="w-4 h-4 mr-2 text-black" />
                       Compartir
+                    </Button>
+                    <Button variant="outline" size="sm" className=" bg-red-600 text-white  hover:bg-red-700 transition-all cursor-pointer font-bold "
+                      onClick={handleLogOut}>
+                      <LogOut className="mr-2  " />
+                      Cerrar Sesión
                     </Button>
                   </>
                 ) : (
