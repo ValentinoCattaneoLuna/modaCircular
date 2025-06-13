@@ -68,7 +68,7 @@ export function Header() {
 
             <Link href="/profile">
               <Avatar className="w-9 h-9 cursor-pointer border-2 border-transparent hover:border-primary-custom transition-colors">
-                <AvatarImage src="/placeholder.svg?height=36&width=36" />
+                <AvatarImage/>
                 <AvatarFallback className="bg-primary-custom text-white">
                   <User className="w-4 h-4" />
                 </AvatarFallback>
