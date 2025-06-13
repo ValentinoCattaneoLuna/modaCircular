@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../styles/formulario.css">
+    <link rel="icon" href="../assets/img/modaCircularLogo.webp">
+    <title>ModaCircular</title>
+</head>
+
+<body>
+    <header>
+        <div class="contenedor">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../assets/img/modaCircularLogo.webp" alt="">
+                </a>
+            </div>
+
+            <nav class="navbar">
+                <ul>
+                    <li><a href="../index.html">Servicios</a></li>
+                    <li><a href="../index.html">Equipo</a></li>
+                    <li><a href="../index.html">Testimonios</a></li>
+                    <li><a href="#">F.A.Q.</a></li>
+                    <li><a href="./formulario.html">Valoranos</a></li>
+                </ul>
+                <button class="boton_verde_claro ir_a_la_app--mobile">
+                    <span>Ir a la app</span>
+                </button>
+            </nav>
+
+
+            <div class="botonera">
+                <button class="ir_a_la_app--desktop boton_verde_claro">
+                    <span>Ir a la app</span>
+                </button>
+                <div class=" hamburguesa" id="toggleMenu">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </div>
+
+
+        </div>
+    </header>
+
+    <main class="main-formulario">
+        <section class="formulario-contenedor">
+            <h2>Dejanos tu valoracion</h2>
+            <form class="formulario-contacto">
+                <div class="campo-formulario">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="mensaje">Mensaje</label>
+                    <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribí tu mensaje..."
+                        required></textarea>
+                </div>
+
+                <div class="campo-formulario">
+                    <label>Valoración</label>
+                    <div class="estrellas">
+                        <input type="radio" id="estrella3" name="valoracion" value="3">
+                        <label for="estrella3" title="Excelente"><i class='bx bxs-star'></i></label>
+
+                        <input type="radio" id="estrella2" name="valoracion" value="2">
+                        <label for="estrella2" title="Bueno"><i class='bx bxs-star'></i></label>
+
+                        <input type="radio" id="estrella1" name="valoracion" value="1">
+                        <label for="estrella1" title="Regular"><i class='bx bxs-star'></i></label>
+                    </div>
+                </div>
+
+                <button type="submit" class="boton_verde_claro">Enviar</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+
+        <div class="contenedor">
+
+            <div class="elementos_footer">
+
+                <div class="nombre_marca">
+                    <span>Moda Circular</span>
+                </div>
+                <div class="logo_marca">
+                    <img src="../assets/img/modaCircularLogo.webp" alt="">
+                </div>
+                <div class="copyright">
+                    <span>©ModaCircular 2025</span>
+                </div>
+            </div>
+
+        </div>
+
+    </footer>
+    <script type="module" src="../js/faq.js"></script>
+</body>
+
+</html>
