@@ -55,7 +55,7 @@ export function Header() {
               </Button>
             </Link>
 
-           
+
 
             <Button
               onClick={() => setIsPublishModalOpen(true)}
@@ -68,7 +68,7 @@ export function Header() {
 
             <Link href="/profile">
               <Avatar className="w-9 h-9 cursor-pointer border-2 border-transparent hover:border-primary-custom transition-colors">
-                <AvatarImage/>
+                <AvatarImage />
                 <AvatarFallback className="bg-primary-custom text-white">
                   <User className="w-4 h-4" />
                 </AvatarFallback>
@@ -77,37 +77,30 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden border-t bg-white">
-          <div className="flex items-center justify-around py-2">
-            <Link href="/feed" className="flex flex-col items-center space-y-1 p-2">
-              <Home className="w-5 h-5 text-gray-600" />
-              <span className="text-xs text-gray-600">Inicio</span>
-            </Link>
-            <Link href="/saved" className="flex flex-col items-center space-y-1 p-2">
-              <Heart className="w-5 h-5 text-gray-600" />
-              <span className="text-xs text-gray-600">Guardados</span>
-            </Link>
-            <Button
-              onClick={() => setIsPublishModalOpen(true)}
-              className="flex flex-col items-center space-y-1 p-2 bg-primary-custom text-white rounded-lg"
-              variant="ghost"
-            >
-              <Upload className="w-5 h-5" />
-              <span className="text-xs">Publicar</span>
-            </Button>
-            <Link href="/chats" className="flex flex-col items-center space-y-1 p-2">
-              <MessageCircle className="w-5 h-5 text-gray-600" />
-              <span className="text-xs text-gray-600">Chats</span>
-            </Link>
-            <Link href="/profile" className="flex flex-col items-center space-y-1 p-2">
-              <User className="w-5 h-5 text-gray-600" />
-              <span className="text-xs text-gray-600">Perfil</span>
-            </Link>
-          </div>
-        </div>
-      </header>
 
+      </header>
+      {/* Mobile Navigation */}
+
+      <div className="md:hidden border-t border-gray-600 bg-white fixed z-1000 bottom-0 w-full">
+        <div className="flex items-center justify-around py-2">
+          <Link href="/feed" className="flex flex-col items-center space-y-1 p-2">
+            <Home className="w-5 h-5 text-gray-600" />
+            <span className="text-xs text-gray-600">Inicio</span>
+          </Link>
+          <Link href="/saved" className="flex flex-col items-center space-y-1 p-2">
+            <Heart className="w-5 h-5 text-gray-600" />
+            <span className="text-xs text-gray-600">Guardados</span>
+          </Link>
+          <Link href="/chats" className="flex flex-col items-center space-y-1 p-2">
+            <MessageCircle className="w-5 h-5 text-gray-600" />
+            <span className="text-xs text-gray-600">Chats</span>
+          </Link>
+          <Link href="/profile" className="flex flex-col items-center space-y-1 p-2">
+            <User className="w-5 h-5 text-gray-600" />
+            <span className="text-xs text-gray-600">Perfil</span>
+          </Link>
+        </div>
+      </div>
       <PublishModal isOpen={isPublishModalOpen} onClose={() => setIsPublishModalOpen(false)} />
     </>
   )
