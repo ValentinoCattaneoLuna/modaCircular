@@ -1,0 +1,96 @@
+.main-formulario {
+    padding: 21px ;
+}
+
+.formulario-contenedor {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.formulario-contenedor h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.formulario-contacto {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.campo-formulario {
+    display: flex;
+    flex-direction: column;
+}
+
+.campo-formulario label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+}
+
+.campo-formulario input,
+.campo-formulario textarea {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.campo-formulario input:focus,
+.campo-formulario textarea:focus {
+    border-color: #6ab04c;
+    outline: none;
+}
+
+button.boton_verde_claro {
+    align-self: flex-end;
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #6ab04c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.boton_verde_claro:hover {
+    background-color: #4caf50;
+}
+
+.estrellas {
+    display: flex;
+    gap: 10px;
+    font-size: 28px;
+    justify-content: start;
+}
+
+.estrellas input[type="radio"] {
+    display: none;
+}
+
+.estrellas label {
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+/* Cambia el color al seleccionar */
+.estrellas input[type="radio"]:checked ~ label i,
+.estrellas input[type="radio"]:checked + label i {
+    color: #FFD700;
+}
+
+/* Efecto hover */
+.estrellas label:hover i,
+.estrellas label:hover ~ label i {
+    color: #FFD700;
+}
+
