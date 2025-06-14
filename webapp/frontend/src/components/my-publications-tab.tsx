@@ -9,6 +9,7 @@ import { Edit, Trash2, Eye, MoreHorizontal, Gift, ArrowRightLeft } from "lucide-
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 import { PublishModal } from "./publish-modal"
+import Swal from "sweetalert2"
 interface User {
   id_usuario: number,
   nombre: string,
@@ -50,8 +51,10 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
   const [products, setProducts] = useState<ProductoBackend[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const user_id = Cookies.get('user_id')
+  const token = Cookies.get('token')
+
   useEffect(() => {
-    const user_id = Cookies.get('user_id')
 
     // Función para obtener publicaciones
     const fetchData = async () => {
@@ -60,7 +63,7 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
         if (!res.ok) throw new Error('Error al cargar publicaciones')
         const data: ProductoBackend[] = await res.json()
 
-        setProducts(data.filter(pub => pub.id_usuario === user.id_usuario ))
+        setProducts(data.filter(pub => pub.id_usuario === user.id_usuario))
 
         // Después de obtener las publicaciones, hacemos la solicitud para cada usuario
       } catch (err) {
@@ -113,7 +116,50 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
       day: "numeric",
     })
   }
+  async function handleEliminarPublicacion(id_publicacion: number) {
 
+try {
+  // Mostrar la alerta de confirmación
+  const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "¡No podrás revertir esto!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, eliminarlo!"
+  });
+
+  // Si el usuario confirma, hacer la solicitud DELETE
+  if (result.isConfirmed) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/publicaciones/${id_publicacion}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) throw new Error('Error al eliminar publicación');
+
+    // Mostrar un mensaje de éxito
+    Swal.fire({
+      title: "¡Eliminado!",
+      text: "Tu publicación ha sido eliminada.",
+      icon: "success"
+    });
+  }
+
+} catch (error) {
+  console.error(error);
+  Swal.fire({
+    title: "Error",
+    text: "Hubo un problema al intentar eliminar la publicación.",
+    icon: "error"
+  });
+}
+
+
+  };
   return (
     <div className="space-y-6">
       {/* Filtros */}
@@ -200,7 +246,10 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
                               </div>
                             </Link>
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600 cursor-pointer hover:bg-green-50">
+                          <DropdownMenuItem className="text-red-600 cursor-pointer hover:bg-green-50"
+                            onClick={() => {
+                              handleEliminarPublicacion(publication.id_publicacion)
+                            }}>
                             <Trash2 className="w-4 h-4 mr-2" />
                             Eliminar
                           </DropdownMenuItem>
@@ -234,7 +283,7 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
                   </div>
 
                   {/* Fecha */}
-                   <div className="text-xs text-gray-400">Publicado el {formatDate(publication.publicatedAt)}</div>
+                  <div className="text-xs text-gray-400">Publicado el {formatDate(publication.publicatedAt)}</div>
                 </div>
               </CardContent>
             </Card>
@@ -255,8 +304,8 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
           </p>
           {isOwnProfile && (
             <Button className="bg-primary-custom hover:bg-primary-custom/90 text-white cursor-pointer"
-             onClick={() => setIsPublishModalOpen(true)}>
-             
+              onClick={() => setIsPublishModalOpen(true)}>
+
               Crear primera publicación
             </Button>
           )}
