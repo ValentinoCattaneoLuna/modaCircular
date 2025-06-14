@@ -19,6 +19,6 @@ router.get('/:id_publicacion',verPublicacionPorId)
 router.delete('/:id_publicacion',authenticate, eliminarPublicacionPorId)
 
 //ruta para editar publicacion por id
-router.patch('/:id',authenticate, editarPublicacionPorId)
+router.put('/:id_publicacion',authenticate, editarPublicacionPorId)
 
 export default router;
