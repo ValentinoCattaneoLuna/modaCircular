@@ -50,7 +50,7 @@
     outline: none;
 }
 
-button.boton_verde_claro {
+button#btn_sumbit_form {
     align-self: flex-end;
     padding: 12px 24px;
     font-size: 16px;
@@ -59,11 +59,11 @@ button.boton_verde_claro {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-button.boton_verde_claro:hover {
-    background-color: #4caf50;
+button#btn_sumbit_form:hover {
+    background-color: #1ABC9C;
 }
 
 .estrellas {
