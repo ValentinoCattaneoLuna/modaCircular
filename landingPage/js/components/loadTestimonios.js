@@ -1,6 +1,6 @@
 export async function cargarTestimonios() {
     try {
-        const response = await fetch('./data/testimonios.json');
+        const response = await fetch('http://localhost:4000/api/testimonios');
         const testimonios = await response.json();
 
         const contenedor = document.querySelector('.testimonios_slider_track');

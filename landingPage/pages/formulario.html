@@ -24,7 +24,7 @@
                     <li><a href="../index.html">Servicios</a></li>
                     <li><a href="../index.html">Equipo</a></li>
                     <li><a href="../index.html">Testimonios</a></li>
-                    <li><a href="#">F.A.Q.</a></li>
+                    <li><a href="../pages/faq.html">F.A.Q.</a></li>
                     <li><a href="./formulario.html">Valoranos</a></li>
                 </ul>
                 <button class="boton_verde_claro ir_a_la_app--mobile">
@@ -48,40 +48,40 @@
 
     <main class="main-formulario">
         <section class="formulario-contenedor">
-            <h2>Dejanos tu valoracion</h2>
-            <form class="formulario-contacto">
+            <h2>Dejanos tu valoración</h2>
+            <form class="formulario-contacto" id="testimonioForm">
                 <div class="campo-formulario">
                     <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+                    <input type="text" id="nombre" name="nombre_testimonio" placeholder="Tu nombre completo" required>
                 </div>
 
                 <div class="campo-formulario">
                     <label for="mensaje">Mensaje</label>
-                    <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribí tu mensaje..."
+                    <textarea id="mensaje" name="mensaje_testimonio" rows="5" placeholder="Escribí tu mensaje..."
                         required></textarea>
                 </div>
 
                 <div class="campo-formulario">
                     <label>Valoración</label>
                     <div class="estrellas">
-                        <input type="radio" id="estrella5" name="valoracion" value="5">
+                        <input type="radio" id="estrella5" name="cantidad_estrellas" value="5" checked>
                         <label for="estrella5" title="Excelente"><i class='bx bxs-star'></i></label>
 
-                        <input type="radio" id="estrella4" name="valoracion" value="4">
-                        <label for="estrella4" title="Excelente"><i class='bx bxs-star'></i></label>
+                        <input type="radio" id="estrella4" name="cantidad_estrellas" value="4">
+                        <label for="estrella4" title="Muy Bueno"><i class='bx bxs-star'></i></label>
                         
-                        <input type="radio" id="estrella3" name="valoracion" value="3">
-                        <label for="estrella3" title="Excelente"><i class='bx bxs-star'></i></label>
+                        <input type="radio" id="estrella3" name="cantidad_estrellas" value="3">
+                        <label for="estrella3" title="Bueno"><i class='bx bxs-star'></i></label>
 
-                        <input type="radio" id="estrella2" name="valoracion" value="2">
-                        <label for="estrella2" title="Bueno"><i class='bx bxs-star'></i></label>
+                        <input type="radio" id="estrella2" name="cantidad_estrellas" value="2">
+                        <label for="estrella2" title="Regular"><i class='bx bxs-star'></i></label>
 
-                        <input type="radio" id="estrella1" name="valoracion" value="1">
-                        <label for="estrella1" title="Regular"><i class='bx bxs-star'></i></label>
+                        <input type="radio" id="estrella1" name="cantidad_estrellas" value="1">
+                        <label for="estrella1" title="Malo"><i class='bx bxs-star'></i></label>
                     </div>
                 </div>
 
-                <button type="submit" class="boton_verde_claro">Enviar</button>
+                <button type="submit" class="boton_verde_claro" id="btn_sumbit_form">Enviar</button>
             </form>
         </section>
     </main>
@@ -106,7 +106,7 @@
         </div>
 
     </footer>
-    <script type="module" src="../js/faq.js"></script>
+    <script type="module" src="../js/formulario.js"></script>
 </body>
 
 </html>
