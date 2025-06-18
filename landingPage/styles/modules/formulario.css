@@ -41,6 +41,7 @@
     border-radius: 8px;
     font-size: 16px;
     transition: border-color 0.3s ease;
+    resize: none;
 }
 
 .campo-formulario input:focus,
@@ -67,6 +68,7 @@ button.boton_verde_claro:hover {
 
 .estrellas {
     display: flex;
+    flex-direction: row-reverse;
     gap: 10px;
     font-size: 28px;
     justify-content: start;
