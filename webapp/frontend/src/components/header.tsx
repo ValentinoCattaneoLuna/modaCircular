@@ -46,7 +46,7 @@ export function Header() {
               <span>Chats</span>
             </Link>
           </nav>
-
+          
           {/* Actions */}
           <div className="flex items-center space-x-4">
             <Link href="/search">
