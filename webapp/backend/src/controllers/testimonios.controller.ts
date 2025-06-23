@@ -49,8 +49,10 @@ export async function verTestimonios(req: Request, res: Response) {
     try {
         const [testimonios] = await pool.query(
             `
-        SELECT * FROM testimonios
-        `)
+            SELECT * FROM testimonios
+            ORDER BY RAND()
+            LIMIT 6;
+            `)
         res.status(200).json(testimonios)
         return
     } catch (err) {
