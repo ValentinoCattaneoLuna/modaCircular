@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -8,10 +8,35 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Search, Upload, Heart, User, Home, MessageCircle, Bell } from "lucide-react"
 import { PublishModal } from "./publish-modal"
+import Cookies from "js-cookie"
 
+interface User {
+  username: string,
+  avatar: string
+}
 export function Header() {
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false)
+  const [user, setUser] = useState<User>()
+  const user_id = Cookies.get('user_id')
 
+  
+ useEffect(() => {
+    const fetchUser = async (user_id: string) => {
+      try {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL
+        const res = await fetch(`${API_URL}/api/usuarios/${user_id}`)
+        if (!res.ok) throw new Error('Error al cargar datos del usuario')
+        const userData: User = await res.json()
+        setUser(userData)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    if (user_id) {
+      fetchUser(user_id)
+    }
+  }, [user_id])
   return (
     <>
       <header className="flex justify-center sticky top-0 z-50 shadow-lg bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -46,7 +71,7 @@ export function Header() {
               <span>Chats</span>
             </Link>
           </nav>
-          
+
           {/* Actions */}
           <div className="flex items-center space-x-4">
             <Link href="/search">
@@ -68,10 +93,8 @@ export function Header() {
 
             <Link href="/profile">
               <Avatar className="w-9 h-9 cursor-pointer border-2 border-transparent hover:border-primary-custom transition-colors">
-                <AvatarImage />
-                <AvatarFallback className="bg-primary-custom text-white">
-                  <User className="w-4 h-4" />
-                </AvatarFallback>
+                <AvatarImage src={user?.avatar || "/placeholder.svg"} />
+                <AvatarFallback>{user?.username[0]}</AvatarFallback>
               </Avatar>
             </Link>
           </div>
