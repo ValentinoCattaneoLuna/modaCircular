@@ -197,7 +197,7 @@ try {
                 <div className="relative">
                   <Link href={`/product/${publication.id_publicacion}`}>
                     <img
-                      src={publication.imagenes || "/placeholder.svg"}
+                      src={publication.imagenes.toString().split(",")[0] || "/placeholder.svg"}
                       alt={publication.titulo}
                       className="w-full h-48 object-cover cursor-pointer hover:opacity-95 transition-opacity"
                     />
