@@ -255,7 +255,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
         <CardContent className="space-y-6">
           {/* Tipo de publicación */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Tipo de publicación *</Label>
+            <Label className="text-sm block font-bold text-gray-900 mb-1">Tipo de publicación *</Label>
             <Select
               value={formData.tipo_publicacion}
               onValueChange={(value: "Venta" | "Donación" | "Intercambio") =>
@@ -265,17 +265,17 @@ export function EditProductForm({ product }: EditProductFormProps) {
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="venta">Vender</SelectItem>
-                <SelectItem value="donacion">Regalar</SelectItem>
-                <SelectItem value="intercambio">Intercambiar</SelectItem>
+              <SelectContent className="w-full border border-gray-300 rounded-md bg-white text-gray-900 shadow-md">
+                <SelectItem value="venta" className="border-b border-gray-200 py-2">Vender</SelectItem>
+                <SelectItem value="donacion" className="border-b border-gray-200 py-2">Regalar</SelectItem>
+                <SelectItem value="intercambio" className="border-b border-gray-200 py-2">Intercambiar</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {/* Título */}
           <div className="space-y-2">
-            <Label htmlFor="titulo">Título *</Label>
+            <Label className="block text-sm font-bold text-gray-900 mb-1" htmlFor="titulo">Título *</Label>
             <Input
               id="titulo"
               value={formData.titulo}
@@ -294,7 +294,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
 
           {/* Descripción */}
           <div className="space-y-2">
-            <Label htmlFor="descripcion">Descripción *</Label>
+            <Label className="block text-sm font-bold text-gray-900 mb-1" htmlFor="descripcion">Descripción *</Label>
             <Textarea
               id="descripcion"
               value={formData.descripcion}
@@ -314,7 +314,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
           {/* Precio (solo para ventas) */}
           {formData.tipo_publicacion === "Venta" && (
             <div className="space-y-2">
-              <Label htmlFor="precio">Precio (€) *</Label>
+              <Label className="block text-sm font-bold text-gray-900 mb-1"  htmlFor="precio">Precio (€) *</Label>
               <Input
                 id="precio"
                 type="number"
@@ -343,7 +343,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
           <CardTitle>Imágenes del producto</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-4 items-start">
             {formData.imagenes.map((image, index) => (
               <div key={index} className="relative aspect-square group">
                 <img
@@ -370,17 +370,16 @@ export function EditProductForm({ product }: EditProductFormProps) {
               </div>
             ))}
             {formData.imagenes.length < 6 && (
-              <Button
-                type="button"
-                variant="outline"
-                className="aspect-square border-dashed border-2 border-primary-custom/30 hover:border-primary-custom hover:bg-primary-custom/5"
-                onClick={handleImageUpload}
-              >
-                <div className="flex flex-col items-center space-y-2">
-                  <Camera className="w-6 h-6 text-primary-custom" />
-                  <span className="text-xs text-primary-custom font-medium">Agregar</span>
-                </div>
-              </Button>
+            <div
+              onClick={handleImageUpload}
+              className="flex items-center justify-center aspect-square w-full border-2 border-dashed border-gray-400 rounded-lg hover:border-green-500 hover:bg-gray-100 cursor-pointer"
+            >
+              <div className="flex flex-col items-center space-y-2 text-center">
+                <Camera className="w-10 h-10 text-green-600" />
+                <span className="text-sm text-gray-800 font-medium">Agregar más fotos</span>
+              </div>
+            </div>
+
             )}
           </div>
           {errors.imagenes && (
@@ -401,7 +400,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Categoría *</Label>
+              <Label className="text-sm block font-bold text-gray-900 mb-1">Categoría *</Label>
               <Select
                 value={formData.categoria}
                 onValueChange={(value) => setFormData((prev) => ({ ...prev, categoria: value }))}
@@ -409,21 +408,21 @@ export function EditProductForm({ product }: EditProductFormProps) {
                 <SelectTrigger className={errors.categoria ? "border-red-500" : ""}>
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="vestidos">Vestidos</SelectItem>
-                  <SelectItem value="camisetas">Camisetas</SelectItem>
-                  <SelectItem value="pantalones">Pantalones</SelectItem>
-                  <SelectItem value="chaquetas">Chaquetas</SelectItem>
-                  <SelectItem value="zapatos">Zapatos</SelectItem>
-                  <SelectItem value="accesorios">Accesorios</SelectItem>
-                  <SelectItem value="bolsos">Bolsos</SelectItem>
+                <SelectContent className="w-full border border-gray-300 rounded-md bg-white text-gray-900 shadow-md">
+                  <SelectItem value="vestidos" className="border-b border-gray-200 py-2">Vestidos</SelectItem>
+                  <SelectItem value="camisetas" className="border-b border-gray-200 py-2">Camisetas</SelectItem>
+                  <SelectItem value="pantalones" className="border-b border-gray-200 py-2">Pantalones</SelectItem>
+                  <SelectItem value="chaquetas" className="border-b border-gray-200 py-2">Chaquetas</SelectItem>
+                  <SelectItem value="zapatos" className="border-b border-gray-200 py-2">Zapatos</SelectItem>
+                  <SelectItem value="accesorios" className="border-b border-gray-200 py-2">Accesorios</SelectItem>
+                  <SelectItem value="bolsos" className="border-b border-gray-200 py-2">Bolsos</SelectItem>
                 </SelectContent>
               </Select>
               {errors.categoria && <p className="text-sm text-red-500">{errors.categoria}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label>Talla *</Label>
+              <Label className="text-sm block font-bold text-gray-900 mb-1">Talla *</Label>
               <Select
                 value={formData.talle}
                 onValueChange={(value) => setFormData((prev) => ({ ...prev, talle: value }))}
@@ -431,21 +430,21 @@ export function EditProductForm({ product }: EditProductFormProps) {
                 <SelectTrigger className={errors.talle ? "border-red-500" : ""}>
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="xs">XS</SelectItem>
-                  <SelectItem value="s">S</SelectItem>
-                  <SelectItem value="m">M</SelectItem>
-                  <SelectItem value="l">L</SelectItem>
-                  <SelectItem value="xl">XL</SelectItem>
-                  <SelectItem value="xxl">XXL</SelectItem>
-                  <SelectItem value="unica">Talla única</SelectItem>
+                <SelectContent className="w-full border border-gray-300 rounded-md bg-white text-gray-900 shadow-md">
+                  <SelectItem value="xs" className="border-b border-gray-200 py-2">XS</SelectItem>
+                  <SelectItem value="s" className="border-b border-gray-200 py-2">S</SelectItem>
+                  <SelectItem value="m" className="border-b border-gray-200 py-2">M</SelectItem>
+                  <SelectItem value="l" className="border-b border-gray-200 py-2">L</SelectItem>
+                  <SelectItem value="xl" className="border-b border-gray-200 py-2">XL</SelectItem>
+                  <SelectItem value="xxl" className="border-b border-gray-200 py-2">XXL</SelectItem>
+                  <SelectItem value="unica" className="border-b border-gray-200 py-2">Talla única</SelectItem>
                 </SelectContent>
               </Select>
               {errors.talle && <p className="text-sm text-red-500">{errors.talle}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label>Estado *</Label>
+              <Label className="text-sm block font-bold text-gray-900 mb-1">Estado *</Label>
               <Select
                 value={formData.estado}
                 onValueChange={(value) => setFormData((prev) => ({ ...prev, estado: value }))}
@@ -453,19 +452,19 @@ export function EditProductForm({ product }: EditProductFormProps) {
                 <SelectTrigger className={errors.estado ? "border-red-500" : ""}>
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="nuevo">Nuevo con etiquetas</SelectItem>
-                  <SelectItem value="como-nuevo">Como nuevo</SelectItem>
-                  <SelectItem value="muy-bueno">Muy bueno</SelectItem>
-                  <SelectItem value="bueno">Bueno</SelectItem>
-                  <SelectItem value="regular">Regular</SelectItem>
+                <SelectContent className="w-full border border-gray-300 rounded-md bg-white text-gray-900 shadow-md">
+                  <SelectItem value="nuevo" className="border-b border-gray-200 py-2">Nuevo con etiquetas</SelectItem>
+                  <SelectItem value="como-nuevo" className="border-b border-gray-200 py-2">Como nuevo</SelectItem>
+                  <SelectItem value="muy-bueno" className="border-b border-gray-200 py-2">Muy bueno</SelectItem>
+                  <SelectItem value="bueno" className="border-b border-gray-200 py-2">Bueno</SelectItem>
+                  <SelectItem value="regular" className="border-b border-gray-200 py-2">Regular</SelectItem>
                 </SelectContent>
               </Select>
               {errors.estado && <p className="text-sm text-red-500">{errors.estado}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="color">Color *</Label>
+              <Label htmlFor="color" className="text-sm block font-bold text-gray-900 mb-1">Color *</Label>
               <Input
                 id="color"
                 value={formData.color}
@@ -611,21 +610,45 @@ export function EditProductForm({ product }: EditProductFormProps) {
       {/* Botones de acción */}
       <div className="flex flex-col sm:flex-row gap-4 justify-between">
         <div className="flex gap-2">
-          <Button type="button" variant="outline" onClick={handlePreview} disabled={isLoading}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handlePreview}
+            disabled={isLoading}
+            className="transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer"
+          >
             <Eye className="w-4 h-4 mr-2" />
             Vista previa
           </Button>
-          <Button type="button" variant="destructive" onClick={handleDelete} disabled={isLoading}>
+
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={isLoading}
+            className="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-red-600 hover:text-white hover:border-black cursor-pointer"
+          >
             <Trash2 className="w-4 h-4 mr-2" />
             Eliminar
           </Button>
         </div>
 
         <div className="flex gap-2">
-          <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => router.back()}
+            disabled={isLoading}
+            className="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-red-600 hover:text-white hover:border-black cursor-pointer"
+          >
             Cancelar
           </Button>
-          <Button type="submit" className="bg-primary-custom hover:bg-primary-custom/90" disabled={isLoading}>
+
+          <Button
+            type="submit"
+            className="bg-primary-custom hover:bg-primary-custom/90 transition-all duration-300 ease-in-out hover:scale-105 hover:border hover:border-black cursor-pointer"
+            disabled={isLoading}
+          >
             {isLoading ? (
               <>
                 <div className="w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -640,6 +663,8 @@ export function EditProductForm({ product }: EditProductFormProps) {
           </Button>
         </div>
       </div>
+
+
     </form>
   )
 }
