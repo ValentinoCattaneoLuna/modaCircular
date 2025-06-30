@@ -44,11 +44,10 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
   return (
     <div className="space-y-4">
       {/* Imagen principal */}
-      <Card className="relative overflow-hidden group h-[600px] w-full">
-        <div className="relative  aspect-[4/5] bg-gray-100">
+      <Card className="relative overflow-hidden group bg-white border rounded-lg">
+        <div className="flex items-center justify-center w-full h-[500px] bg-gray-100">
           <img
-                  className="w-full h-full object-fit"
-
+            className="max-w-full max-h-full object-contain"
             src={images[currentImage] || "/placeholder.svg"}
             alt={`${title} - Imagen ${currentImage + 1}`}
            
@@ -140,13 +139,16 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
 
       {/* Modal de pantalla completa */}
       <Dialog open={isFullscreen} onOpenChange={setIsFullscreen}>
-        <DialogContent className="max-w-4xl w-full h-[90vh] p-0">
+                <DialogContent className="max-w-4xl w-full h-[90vh] p-0">
           <div className="relative w-full h-full bg-black flex items-center justify-center">
-            <img
-              src={images[currentImage] || "/placeholder.svg"}
-              alt={`${title} - Imagen ${currentImage + 1}`}
-              className="max-w-full max-h-full object-contain"
-            />
+            
+            <div className="w-[70%] aspect-[4/5] max-h-[90%] flex items-center justify-center">
+              <img
+                src={images[currentImage] || "/placeholder.svg"}
+                alt={`${title} - Imagen ${currentImage + 1}`}
+                className="object-contain w-full h-full rounded-md"
+              />
+            </div>
 
             {/* Navegación en pantalla completa */}
             {images.length > 1 && (
@@ -176,6 +178,7 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
             </div>
           </div>
         </DialogContent>
+
       </Dialog>
     </div>
   )
