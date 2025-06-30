@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import Link from "next/link"
 import { PublishModal } from "./publish-modal"
 import Swal from "sweetalert2"
-import {jwtDecode} from "jwt-decode"
+import { jwtDecode } from "jwt-decode"
 interface User {
   id_usuario: number,
   nombre: string,
@@ -52,10 +52,10 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
   const [products, setProducts] = useState<ProductoBackend[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  
+
   const token = Cookies.get('token')
   const decoded: any = jwtDecode(token!!);
-  const userId = decoded.id;  
+  const userId = decoded.id;
 
 
 
@@ -123,45 +123,45 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
   }
   async function handleEliminarPublicacion(id_publicacion: number) {
 
-try {
-  // Mostrar la alerta de confirmación
-  const result = await Swal.fire({
-    title: "¿Estás seguro?",
-    text: "¡No podrás revertir esto!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminarlo!"
-  });
+    try {
+      // Mostrar la alerta de confirmación
+      const result = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "¡No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminarlo!"
+      });
 
-  // Si el usuario confirma, hacer la solicitud DELETE
-  if (result.isConfirmed) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/publicaciones/${id_publicacion}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
+      // Si el usuario confirma, hacer la solicitud DELETE
+      if (result.isConfirmed) {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/publicaciones/${id_publicacion}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!res.ok) throw new Error('Error al eliminar publicación');
+
+        // Mostrar un mensaje de éxito
+        Swal.fire({
+          title: "¡Eliminado!",
+          text: "Tu publicación ha sido eliminada.",
+          icon: "success"
+        });
       }
-    });
 
-    if (!res.ok) throw new Error('Error al eliminar publicación');
-
-    // Mostrar un mensaje de éxito
-    Swal.fire({
-      title: "¡Eliminado!",
-      text: "Tu publicación ha sido eliminada.",
-      icon: "success"
-    });
-  }
-
-} catch (error) {
-  console.error(error);
-  Swal.fire({
-    title: "Error",
-    text: "Hubo un problema al intentar eliminar la publicación.",
-    icon: "error"
-  });
-}
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un problema al intentar eliminar la publicación.",
+        icon: "error"
+      });
+    }
 
 
   };
@@ -240,8 +240,11 @@ try {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="bg-white">
                           <DropdownMenuItem className="cursor-pointer hover:bg-green-50">
-                            <Eye className="w-4 h-4 mr-2" />
-                            Ver publicación
+                            <Link href={`/product/${publication.id_publicacion}`}>
+                              <div className="flex items-center gap-2">
+                                <Eye className="w-4 h-4 mr-2" />Ver publicación
+                              </div>
+                            </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild className="cursor-pointer hover:bg-green-50">
                             <Link href={`/product/${publication.id_publicacion}/edit`}>
