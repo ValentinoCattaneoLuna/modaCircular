@@ -1,5 +1,10 @@
+"use client"
 import { Header } from "@/components/header"
 import { EditProductForm } from "@/components/edit-product-form"
+import Cookies from 'js-cookie'
+import { jwtDecode } from 'jwt-decode';
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from "react";
 
 import {
   Breadcrumb,
@@ -15,67 +20,98 @@ interface EditProductPageProps {
     id: string
   }
 }
+
 interface ProductoBackend {
-    id_publicacion: number
-    titulo: string
-    precio: number
-    imagenes: string
-    estado: string
-    talle: string
-    tipo_publicacion: "Venta" | "Donación" | "Intercambio"
-    categoria: string
-    descripcion: string
-    color: string
-    id_usuario: number
-    nombre_usuario: string
-    apellido_usuario: string
-    fecha_publicacion: string
+  id_publicacion: number
+  titulo: string
+  precio: number
+  imagenes: string
+  estado: string
+  talle: string
+  tipo_publicacion: "Venta" | "Donación" | "Intercambio"
+  categoria: string
+  descripcion: string
+  color: string
+  id_usuario: number
+  nombre_usuario: string
+  apellido_usuario: string
+  fecha_publicacion: string
 }
+
 interface UsuarioBackend {
-
-    id_usuario: number
-    username: string
-    avatar: string | null
-    telefono: string
-    nombre: string
-    apellido: string
+  id_usuario: number
+  username: string
+  avatar: string | null
+  telefono: string
+  nombre: string
+  apellido: string
 }
-const mockProduct: ProductoBackend = {
-  id_publicacion: 1,   
-    titulo: "Camiseta de Algodón Orgánico",
-    precio: 25.99,
-    imagenes: "https://acdn-us.mitiendanube.com/stores/005/656/704/products/025a-gris-copia-5a9b83ad521386e50d17363694476424-1024-1024.jpg,https://acdn-us.mitiendanube.com/stores/003/588/275/products/diseno-sin-titulo-58-166bb07cee4f4d95d417037929367079-1024-1024.jpg",
-    estado: "Nuevo",
-    talle: "M",
-    tipo_publicacion: "Venta",
-    categoria: "Ropa",
-    descripcion: "Camiseta de algodón orgánico, suave y cómoda.",
-    color: "Blanco",    
-    id_usuario: 1,
-    nombre_usuario: "Juan",
-    apellido_usuario: "Pérez",
-    fecha_publicacion: "2023-10-01T12:00:00Z",
-}
-const mockUser: UsuarioBackend = {
-  id_usuario: 1,
-    username: "juanperez",
-    avatar: "https://example.com/avatar.jpg",
-    telefono: "123456789",
-    nombre: "Juan",
-    apellido: "Pérez",
-}
-
-
 
 export default function EditProductPage({ params }: EditProductPageProps) {
-  // En una aplicación real, aquí verificarías que el usuario es el propietario del producto
+  const router = useRouter();
+  const [producto, setProducto] = useState<ProductoBackend>()
+  const [usuario, setUsuario] = useState<UsuarioBackend>()
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (!token) {
+      router.push('/login')
+      return;
+    }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const userId = decoded.id;
+
+      const fetchUserData = async (userId: number) => {
+        try {
+          const API_URL = process.env.NEXT_PUBLIC_API_URL
+          const res = await fetch(`${API_URL}/api/usuarios/${userId}`)
+          if (!res.ok) throw new Error('Error al cargar datos del usuario')
+          const userData: UsuarioBackend = await res.json()
+          setUsuario(userData)
+        } catch (err) {
+          console.error(err)
+          setError(true)
+        }
+      }
+
+      const fetchData = async () => {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/publicaciones/${params.id}`)
+          if (!res.ok) throw new Error('Error al cargar la publicación')
+          const data: ProductoBackend = await res.json()
+
+          // Validar que el usuario autenticado sea el dueño
+          if (userId != data.id_usuario) {
+            router.push('/profile');
+            return;
+          }
+
+          setProducto(data)
+          fetchUserData(data.id_usuario)
+        } catch (err) {
+          console.error(err)
+          setError(true)
+        } finally {
+          setLoading(false)
+        }
+      }
+
+      fetchData();
+    } catch (err) {
+      console.error("Error al decodificar el token:", err);
+      router.push('/login');
+    }
+  }, [params.id, router]);
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
       <main className="container mx-auto px-4 py-6 max-w-4xl">
-        {/* Breadcrumb */}
         <Breadcrumb className="mb-6">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -101,7 +137,13 @@ export default function EditProductPage({ params }: EditProductPageProps) {
           <p className="text-gray-600">Modifica la información de tu producto</p>
         </div>
 
-        <EditProductForm product={mockProduct} />
+        {loading ? (
+          <p className="text-gray-500">Cargando producto...</p>
+        ) : error ? (
+          <p className="text-red-500">Error al cargar los datos. Intenta nuevamente.</p>
+        ) : producto ? (
+          <EditProductForm product={producto} />
+        ) : null}
       </main>
     </div>
   )
