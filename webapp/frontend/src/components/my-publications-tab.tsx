@@ -10,6 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import Link from "next/link"
 import { PublishModal } from "./publish-modal"
 import Swal from "sweetalert2"
+import {jwtDecode} from "jwt-decode"
 interface User {
   id_usuario: number,
   nombre: string,
@@ -51,8 +52,12 @@ export function MyPublicationsTab({ user, isOwnProfile }: MyPublicationsTabProps
   const [products, setProducts] = useState<ProductoBackend[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const user_id = Cookies.get('user_id')
+  
   const token = Cookies.get('token')
+  const decoded: any = jwtDecode(token!!);
+  const userId = decoded.id;  
+
+
 
   useEffect(() => {
 

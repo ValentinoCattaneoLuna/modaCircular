@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Search, Upload, Heart, User, Home, MessageCircle, Bell } from "lucide-react"
 import { PublishModal } from "./publish-modal"
+import {jwtDecode} from "jwt-decode"
 import Cookies from "js-cookie"
 
 interface User {
@@ -17,14 +18,15 @@ interface User {
 export function Header() {
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false)
   const [user, setUser] = useState<User>()
-  const user_id = Cookies.get('user_id')
-
+  const token = Cookies.get('token')
+  const decoded: any = jwtDecode(token!!);
+  const userId = decoded.id;
   
  useEffect(() => {
-    const fetchUser = async (user_id: string) => {
+    const fetchUser = async (userId: string) => {
       try {
         const API_URL = process.env.NEXT_PUBLIC_API_URL
-        const res = await fetch(`${API_URL}/api/usuarios/${user_id}`)
+        const res = await fetch(`${API_URL}/api/usuarios/${userId}`)
         if (!res.ok) throw new Error('Error al cargar datos del usuario')
         const userData: User = await res.json()
         setUser(userData)
@@ -33,10 +35,10 @@ export function Header() {
       }
     }
 
-    if (user_id) {
-      fetchUser(user_id)
+    if (userId) {
+      fetchUser(userId)
     }
-  }, [user_id])
+  }, [userId])
   return (
     <>
       <header className="flex justify-center sticky top-0 z-50 shadow-lg bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">

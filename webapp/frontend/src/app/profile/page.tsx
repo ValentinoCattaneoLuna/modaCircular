@@ -6,7 +6,7 @@ import { ProfileTabs } from "@/components/profile-tabs"
 import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
-
+import { jwtDecode } from 'jwt-decode';
 interface IUsuario {
   id_usuario: number
   nombre: string
@@ -26,11 +26,11 @@ export default function ProfilePage() {
   const [currentUser, setCurrentUser] = useState<{ [key: string]: IUsuario }>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-
+  const token = Cookies.get('token')
+  const decoded: any = jwtDecode(token!!);
+  const userId = decoded.id;
   useEffect(() => {
-    const token = Cookies.get('token')
-    const userId = Cookies.get('user_id')
-
+ 
     if (!token) {
       router.push('/login')
       return
@@ -57,7 +57,6 @@ export default function ProfilePage() {
     }
   }, [router])
 
-  const userId = Cookies.get('user_id')
   const user = userId ? currentUser[userId] : null
 
   if (loading) return <div>Cargando...</div>

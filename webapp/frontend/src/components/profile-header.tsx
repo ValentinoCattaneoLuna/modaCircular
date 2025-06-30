@@ -41,7 +41,6 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
 
   const handleLogOut = () => {
     Cookies.remove('token')
-    Cookies.remove('user_id')
     router.push('/')
 
   }

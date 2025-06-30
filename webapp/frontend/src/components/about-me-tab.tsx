@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Edit, Save, X, MapPin, Phone, Calendar } from "lucide-react"
 import Cookies from 'js-cookie'
 import { useRouter } from "next/navigation"
-
+import {jwtDecode} from 'jwt-decode';
 
 
 interface User {
@@ -63,10 +63,10 @@ export function AboutMeTab({ user, isOwnProfile }: AboutMeTabProps) {
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL
     const token = Cookies.get('token')
-    const user_id = Cookies.get('user_id')
-
+    const decoded: any = jwtDecode(token!!);
+    const userId = decoded.id;
     try {
-      const response = await fetch(`${API_URL}/api/usuarios/${user_id}`, {
+      const response = await fetch(`${API_URL}/api/usuarios/${userId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
