@@ -32,7 +32,7 @@ export function SellerInfo({ seller }: SellerInfoProps) {
       <CardContent className="space-y-4">
         {/* Perfil del vendedor */}
         <div className="flex items-start gap-4">
-          <Link href={`/user/${seller.username}`}>
+          <Link href={`/user/username/${seller.username}`}>
             <Avatar className="w-16 h-16 cursor-pointer hover:opacity-80 transition-opacity">
               <AvatarImage src={seller.avatar || "/placeholder.svg"} alt={seller.nombre} />
               <AvatarFallback className="text-lg font-bold bg-primary-custom text-white">
@@ -46,14 +46,14 @@ export function SellerInfo({ seller }: SellerInfoProps) {
 
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <Link href={`/user/${seller.username}`}>
+              <Link href={`/user/username/${seller.username}`}>
                 <h3 className="font-semibold text-lg hover:text-primary-custom transition-colors cursor-pointer">
-                  {seller.nombre}
+                  {seller.nombre + " " + seller.apellido}
                 </h3>
               </Link>
             </div>
 
-            <Link href={`/user/${seller.username}`}>
+            <Link href={`/user/username/${seller.username}`}>
               <p className="text-gray-600 hover:text-primary-custom transition-colors cursor-pointer">
                 @{seller.username}
               </p>
