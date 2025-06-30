@@ -246,7 +246,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Información básica */}
-      <Card>
+      <Card className="bg-white shadow-lg border-0"> 
         <CardHeader>
           <CardTitle>Información básica</CardTitle>
         </CardHeader>
@@ -264,9 +264,9 @@ export function EditProductForm({ product }: EditProductFormProps) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="w-full border border-gray-300 rounded-md bg-white text-gray-900 shadow-md">
-                <SelectItem value="venta" className="border-b border-gray-200 py-2">Vender</SelectItem>
-                <SelectItem value="donacion" className="border-b border-gray-200 py-2">Regalar</SelectItem>
-                <SelectItem value="intercambio" className="border-b border-gray-200 py-2">Intercambiar</SelectItem>
+                <SelectItem value="Venta" className="border-b border-gray-200 py-2">Vender</SelectItem>
+                <SelectItem value="Donación" className="border-b border-gray-200 py-2">Regalar</SelectItem>
+                <SelectItem value="Intercambio" className="border-b border-gray-200 py-2">Intercambiar</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -298,7 +298,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
               value={formData.descripcion}
               onChange={(e) => setFormData((prev) => ({ ...prev, descripcion: e.target.value }))}
               placeholder="Describe tu prenda: estado, detalles, historia..."
-              className={`min-h-[120px] ${errors.descripcion ? "border-red-500" : ""}`}
+              className={`resize-none min-h-[120px] ${errors.descripcion ? "border-red-500" : ""}`}
             />
             {errors.descripcion && (
               <p className="text-sm text-red-500 flex items-center gap-1">
@@ -336,7 +336,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
       </Card>
 
       {/* Imágenes */}
-      <Card>
+      <Card className="bg-white shadow-lg border-0">
         <CardHeader>
           <CardTitle>Imágenes del producto</CardTitle>
         </CardHeader>
@@ -391,7 +391,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
       </Card>
 
       {/* Detalles del producto */}
-      <Card>
+      <Card className="bg-white shadow-lg border-0">
         <CardHeader>
           <CardTitle>Detalles del producto</CardTitle>
         </CardHeader>
@@ -606,45 +606,23 @@ export function EditProductForm({ product }: EditProductFormProps) {
       </Card> */}
 
       {/* Botones de acción */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between">
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handlePreview}
-            disabled={isLoading}
-            className="transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer"
-          >
-            <Eye className="w-4 h-4 mr-2" />
-            Vista previa
-          </Button>
+      <div className="flex flex-col sm:flex-row gap-4 justify-end">
+        
 
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={handleDelete}
-            disabled={isLoading}
-            className="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-red-600 hover:text-white hover:border-black cursor-pointer"
-          >
-            <Trash2 className="w-4 h-4 mr-2" />
-            Eliminar
-          </Button>
-        </div>
-
-        <div className="flex gap-2">
+        <div className="flex  gap-2">
           <Button
             type="button"
             variant="outline"
             onClick={() => router.back()}
             disabled={isLoading}
-            className="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-red-600 hover:text-white hover:border-black cursor-pointer"
+            className="bg-red-600 text-white cursor-pointer transition-all hover:scale-110 focus:scale-90"
           >
             Cancelar
           </Button>
 
           <Button
             type="submit"
-            className="bg-primary-custom hover:bg-primary-custom/90 transition-all duration-300 ease-in-out hover:scale-105 hover:border hover:border-black cursor-pointer"
+             className="bg-primary-custom hover:bg-primary-custom/90 text-white cursor-pointer transition-all hover:scale-110 focus:scale-90"
             disabled={isLoading}
           >
             {isLoading ? (
