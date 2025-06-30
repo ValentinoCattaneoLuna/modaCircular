@@ -17,7 +17,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 interface ProductoBackend {
     id_publicacion: number
     titulo: string
-    precio: number
+    precio?: number
     imagenes: string
     estado: string
     talle: string
@@ -68,7 +68,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
   const [formData, setFormData] = useState({
     titulo: product.titulo,
     descripcion: product.descripcion,
-    precio: product.precio.toString(),
+    precio: product.precio?.toString() || "0",
     imagenes: product.imagenes.toString().split(","),
     tipo_publicacion: product.tipo_publicacion,
     categoria: product.categoria,
@@ -108,8 +108,6 @@ export function EditProductForm({ product }: EditProductFormProps) {
         newErrors.precio = "El precio es obligatorio para productos en venta"
       } else if (precio <= 0) {
         newErrors.precio = "El precio debe ser mayor a 0"
-      } else if (precio > 10000) {
-        newErrors.precio = "El precio no puede exceder €10,000"
       }
     }
 
@@ -314,7 +312,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
           {/* Precio (solo para ventas) */}
           {formData.tipo_publicacion === "Venta" && (
             <div className="space-y-2">
-              <Label className="block text-sm font-bold text-gray-900 mb-1"  htmlFor="precio">Precio (€) *</Label>
+              <Label className="block text-sm font-bold text-gray-900 mb-1"  htmlFor="precio">Precio ($) *</Label>
               <Input
                 id="precio"
                 type="number"
