@@ -29,6 +29,7 @@ interface UsuarioBackend {
   username: string
   avatar: string | null
   telefono: string
+  ubicacion: string
 }
 
 export default function SavedPage() {
@@ -120,7 +121,7 @@ export default function SavedPage() {
                     type: product.tipo_publicacion as 'Venta' | 'Donación' | 'Intercambio',
                     category: product.categoria,
                     color: product.color,
-                    location: "Argentina",
+                    location: user.ubicacion || "",
                   }}
                 />
               );
