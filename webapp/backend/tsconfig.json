@@ -10,10 +10,15 @@
 
     // Bundler mode
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
-    "noEmit": true,
-
+    "outDir": "dist",                       // Carpeta de salida compilada
+    "rootDir": "src",                       // Carpeta raíz de código fuente
+    "esModuleInterop": true,               // Para compatibilidad con CommonJS
+    "forceConsistentCasingInFileNames": true,  // Para evitar problemas en sistemas case-sensitive
+    "allowImportingTsExtensions": false,
+    "noEmit": false,                     
+    "resolveJsonModule": true,             // Importar JSON
+    "allowSyntheticDefaultImports": true, // Para importar sin default en algunas libs
     // Best practices
     "strict": true,
     "skipLibCheck": true,
@@ -24,5 +29,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
