@@ -76,11 +76,11 @@ export function Header() {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            <Link href="/search">
+            {/* <Link href="/search">
               <Button variant="ghost" size="icon" className="text-gray-600 hover:text-primary-custom cursor-pointer">
                 <Search className="w-5 h-5" />
               </Button>
-            </Link>
+            </Link> */}
 
 
 
