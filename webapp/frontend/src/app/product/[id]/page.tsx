@@ -4,7 +4,6 @@ import { ProductGallery } from "@/components/product-gallery"
 import { ProductInfo } from "@/components/product-info"
 import { ProductActions } from "@/components/product-actions"
 import { SellerInfo } from "@/components/seller-info"
-//import { RelatedProducts } from "@/components/related-products"
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -16,13 +15,13 @@ import {
 import { LoaderValidation } from '@/components/loader-validation';
 import { Toaster } from 'sonner';
 import { useState, useEffect } from "react"
-import { useRouter } from 'next/navigation'
+import { useRouter,useParams } from 'next/navigation'
 import Cookies from 'js-cookie'
-interface ProductPageProps {
-  params: {
-    id: string
-  }
-}
+// interface ProductPageProps {
+//   params: {
+//     id: string
+//   }
+// }
 interface ProductoBackend {
     id_publicacion: number
     titulo: string
@@ -53,7 +52,8 @@ interface UsuarioBackend {
 
 
 
-export default function ProductPage({ params }: ProductPageProps) {
+export default function ProductPage(/*{ params }: ProductPageProps*/) {
+    const { id } = useParams() as { id: string }
     const router = useRouter()
     const [producto, setProducto] = useState<ProductoBackend>()
     const [usuario, setUsuario] = useState<UsuarioBackend>()
@@ -83,7 +83,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
         const fetchData = async () => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/publicaciones/${params.id}`)
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/publicaciones/${id}`)
                 if (!res.ok) throw new Error('Error al cargar la publicación')
                 const data: ProductoBackend = await res.json()
                 setProducto(data)
@@ -99,7 +99,7 @@ export default function ProductPage({ params }: ProductPageProps) {
         }
 
         fetchData()
-    }, [router, params.id])
+    }, [router, id])
 
     // Set imagenes una vez que producto se haya cargado
     useEffect(() => {
