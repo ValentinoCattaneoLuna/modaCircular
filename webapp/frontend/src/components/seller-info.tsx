@@ -15,6 +15,8 @@ interface SellerInfoProps {
     telefono: string
     nombre: string
     apellido: string
+    ubicacion: string
+    joinDate: string
   }
 }
 
@@ -72,13 +74,13 @@ export function SellerInfo({ seller }: SellerInfoProps) {
         <div className="space-y-3 text-sm">
           <div className="flex items-center gap-2 text-gray-600">
             <MapPin className="w-4 h-4" />
-            <span>{/*seller.ubicacion*/ "Argentina"}</span>
+            <span>{seller?.ubicacion || ""}</span>
           </div>
 
-          {/* <div className="flex items-center gap-2 text-gray-600">
+          <div className="flex items-center gap-2 text-gray-600">
             <Calendar className="w-4 h-4" />
             <span>Miembro desde {formatJoinDate(seller.joinDate)}</span>
-          </div> */}
+          </div> 
 
         </div>
 
@@ -90,10 +92,7 @@ export function SellerInfo({ seller }: SellerInfoProps) {
             </Button>
           </Link>
 
-          <Button variant="ghost" className="w-full text-primary-custom hover:bg-primary-custom/10">
-            <MessageCircle className="w-4 h-4 mr-2" />
-            Ver más productos de {seller.nombre}
-          </Button>
+   
         </div>
       </CardContent>
     </Card>
