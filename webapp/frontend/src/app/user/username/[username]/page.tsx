@@ -5,13 +5,13 @@ import { ProfileHeader } from "@/components/profile-header"
 import { ProfileTabs } from "@/components/profile-tabs"
 import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
-import { useRouter } from 'next/navigation'
+import { useRouter,useParams } from 'next/navigation'
 import {Toaster} from 'sonner'
-interface UserProfilePageProps {
-  params: {
-    username: string
-  }
-}
+// interface UserProfilePageProps {
+//   params: {
+//     username: string
+//   }
+// }
 
 interface IUsuario {
   id_usuario: number
@@ -27,7 +27,8 @@ interface IUsuario {
   joinDate: string
 }
 
-export default function UserProfilePage({ params }: UserProfilePageProps) {
+export default function UserProfilePage(/*{ params }: UserProfilePageProps*/) {
+  const { username } = useParams() as { username: string }
   const router = useRouter()
   const [user, setUser] = useState<IUsuario | null>(null)
   const [loading, setLoading] = useState(true)
@@ -43,7 +44,7 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
     const fetchUserData = async () => {
       try {
         const API_URL = process.env.NEXT_PUBLIC_API_URL
-        const res = await fetch(`${API_URL}/api/usuarios/username/${params.username}`)
+        const res = await fetch(`${API_URL}/api/usuarios/username/${username}`)
         if (!res.ok) throw new Error('Error al cargar datos del usuario')
         const userData: IUsuario = await res.json()
         setUser(userData)
@@ -56,7 +57,7 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
     }
 
     fetchUserData()
-  }, [params.username, router])
+  }, [username, router])
 
   if (loading) return <div>Cargando...</div>
   if (error || !user) return <div>Error al cargar el perfil.</div>
