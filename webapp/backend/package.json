@@ -2,9 +2,11 @@
   "name": "backend",
   "type": "module",
   "private": true,
-  "scripts": {
-    "dev": "bun run src/index.ts"
-  },
+"scripts": {
+  "build": "tsc -p tsconfig.json",
+  "start": "node dist/index.js",
+  "dev": "bun run src/index.ts"
+},
   "devDependencies": {
     "@types/bcrypt": "5.0.2",
     "@types/bun": "latest",
