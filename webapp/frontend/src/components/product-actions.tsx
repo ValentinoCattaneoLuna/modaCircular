@@ -8,6 +8,18 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import {useFavorito} from "@/hooks/useToggleFavorito "
+import { toast } from 'sonner'
+
+
+interface UsuarioBackend {
+
+    id_usuario: number
+    username: string
+    avatar: string | null
+    telefono: string
+    nombre: string
+    apellido: string
+}
 
 interface ProductActionsProps {
   product: {
@@ -26,29 +38,41 @@ interface ProductActionsProps {
     apellido_usuario: string
     fecha_publicacion: string
   }
+  user:UsuarioBackend
 }
 
-export function ProductActions({ product }: ProductActionsProps) {
+export function ProductActions({ product,user }: ProductActionsProps) {
   const { isFavorito, toggleFavorito, loading } = useFavorito(product.id_publicacion);
   const [message, setMessage] = useState("")
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
 
-  // const handleContact = () => {
-  //   const defaultMessage = `¡Hola ${product.user.name}! Me interesa tu producto "${product.title}". ¿Podríamos hablar sobre él?`
-  //   const finalMessage = message || defaultMessage
-  //   const whatsappUrl = `https://wa.me/${product.user.phone?.replace(/\s/g, "")}?text=${encodeURIComponent(finalMessage)}`
-  //   window.open(whatsappUrl, "_blank")
-  //   setIsMessageModalOpen(false)
-  //   setMessage("")
-  // }
+   const handleContact = () => {
+    if (!user?.telefono) {
+      toast.error('El usuario no tiene un número de teléfono vinculado', {
+        duration: 2000,
+        style: { background: '#e7000b', color: "#fff" }
+      })
+      return
+    } else{
+      const defaultMessage = `¡Hola ${user.nombre +" "+user.apellido}! Me interesa tu producto "${product.titulo}". ¿Podríamos hablar sobre él?`
+      const finalMessage = message || defaultMessage
 
 
+
+      const whatsappUrl = `https://wa.me/${user?.telefono.replace(/[^\d]/g, "")}?text=${encodeURIComponent(finalMessage)}`
+      window.open(whatsappUrl, "_blank")
+      setIsMessageModalOpen(false)
+      setMessage("")
+    }
+    
+  }
+    
   return (
     <Card className="border-0 overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-white">
       <CardContent className="p-6 space-y-4">
         {/* Botón principal según el tipo */}
         <Button
-          // onClick={handleContact}
+          onClick={handleContact}
           className="w-full bg-primary-custom hover:bg-primary-custom/90 text-white text-lg py-3 cursor-pointer"
           size="lg"
         >
@@ -74,7 +98,7 @@ export function ProductActions({ product }: ProductActionsProps) {
                   <Label htmlFor="message">Tu mensaje</Label>
                   <Textarea
                     id="message"
-                    //placeholder={`¡Hola ${product.user.name}! Me interesa tu producto "${product.title}". ¿Podríamos hablar sobre él?`}
+                    placeholder={`¡Hola ${user?.nombre}! Me interesa tu producto "${product.titulo}". ¿Podríamos hablar sobre él?`}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="min-h-[100px] mt-2 resize-none"
@@ -86,7 +110,7 @@ export function ProductActions({ product }: ProductActionsProps) {
                     Cancelar
                   </Button>
                   <Button 
-                  //onClick={handleContact} 
+                  onClick={handleContact} 
                   className="bg-primary-custom hover:bg-primary-custom/90 text-white cursor-pointer transition-all hover:scale-110 focus:scale-90">
                     Enviar por WhatsApp
                   </Button>
