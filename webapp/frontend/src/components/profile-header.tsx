@@ -31,14 +31,28 @@ interface ProfileHeaderProps {
 }
 
 export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
-  const [isFollowing, setIsFollowing] = useState(false)
   const router = useRouter()
 
   const formatJoinDate = (dateString: string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("es-ES", { year: "numeric", month: "long" })
   }
-
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Perfil Moda Circular",
+          text: `Este es el perfil de: ${user.username}`,
+          url: window.location.href,
+        })
+      } catch (error) {
+        console.log("Error sharing:", error)
+      }
+    } else {
+      // Fallback: copiar al portapapeles
+      navigator.clipboard.writeText(window.location.href)
+    }
+  }
   const handleLogOut = () => {
     Cookies.remove('token')
     router.push('/')
@@ -101,7 +115,7 @@ export function ProfileHeader({ user, isOwnProfile }: ProfileHeaderProps) {
                   <>
 
                     <Button variant="outline" size="sm" className="border-2 border-gray-200 bg-white hover:bg-gray-300 cursor-pointer font-bold text-gray-900"
-                    //onClick={} //implementar funcion para guardar en el portapapeles la window.location.href
+                    onClick={handleShare}
                     >
                       <Share2 className="w-4 h-4 mr-2 text-black" />
                       Compartir
