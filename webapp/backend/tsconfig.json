@@ -12,7 +12,8 @@
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": false,
     "outDir": "dist",                       // Carpeta de salida compilada
-    "rootDir": "src",                       // Carpeta raíz de código fuente
+    "rootDir": "src", 
+    "types": ["node", "express"],                      // Carpeta raíz de código fuente
     "esModuleInterop": true,               // Para compatibilidad con CommonJS
     "forceConsistentCasingInFileNames": true,  // Para evitar problemas en sistemas case-sensitive
     "allowImportingTsExtensions": false,
