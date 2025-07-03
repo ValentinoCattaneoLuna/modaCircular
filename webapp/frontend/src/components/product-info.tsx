@@ -58,14 +58,16 @@ export function ProductInfo({ product }: ProductInfoProps) {
     }
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("es-ES", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
-  }
+const formatDate = (dateString: string) => {
+  const [day, month, year] = dateString.split("/").map(Number);
+  const date = new Date(year, month - 1, day); 
+  return date.toLocaleDateString("es-ES", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
 
   return (
     <div className="space-y-6 ">
@@ -99,17 +101,6 @@ export function ProductInfo({ product }: ProductInfoProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-gray-700 leading-relaxed wrap-break-word ">{product.descripcion}</p>
-
-          {/* Tags */}
-          {/* {product.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {product.tags.map((tag, index) => (
-                <Badge key={index} variant="outline" className="text-xs">
-                  #{tag}
-                </Badge>
-              ))}
-            </div>
-          )} */}
 
           <div className="flex items-center text-sm text-gray-500">
             <Calendar className="w-4 h-4 mr-1" />
