@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,7 +9,8 @@ import { Label } from "@/components/ui/label"
 import { Edit, Save, X, MapPin, Phone, Calendar } from "lucide-react"
 import Cookies from 'js-cookie'
 import { useRouter } from "next/navigation"
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
+import { GoogleMap, useJsApiLoader, StandaloneSearchBox } from '@react-google-maps/api'
 
 
 interface User {
@@ -32,7 +33,12 @@ interface AboutMeTabProps {
 }
 
 export function AboutMeTab({ user, isOwnProfile }: AboutMeTabProps) {
-  
+  const inputRef = useRef<google.maps.places.SearchBox | null>(null)
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+    libraries: ['places']
+  })
   const [isEditing, setIsEditing] = useState(false)
   const [editData, setEditData] = useState({
     bio: user.bio,
@@ -48,41 +54,44 @@ export function AboutMeTab({ user, isOwnProfile }: AboutMeTabProps) {
     telefono: '',
   })
 
-  const handleSave = async () => {
-    const newErrors = {
-      bio: editData.bio.trim() ? '' : 'La biografía es obligatoria.',
-      ubicacion: editData.ubicacion?.trim() ? '' : 'La ubicación es obligatoria.',
-      nacimiento: editData.nacimiento.split('T')[0].trim() ? '' : 'La fecha de nacimiento es obligatoria.',
-      telefono: editData.telefono?.trim() ? '' : 'El teléfono es obligatorio.',
-    }
+const handleSave = async () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const token = Cookies.get('token');
 
-    setErrors(newErrors)
-
-    const hasErrors = Object.values(newErrors).some((err) => err !== '')
-    if (hasErrors) return
-
-    const API_URL = process.env.NEXT_PUBLIC_API_URL
-    const token = Cookies.get('token')
-    const decoded: any = jwtDecode(token!!);
-    const userId = decoded.id;
-    try {
-      const response = await fetch(`${API_URL}/api/usuarios/${userId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(editData),
-      });
-
-      if (!response.ok) throw new Error("Error al guardar los cambios");
-
-      console.log("Cambios guardados correctamente");
-      setIsEditing(false)
-    } catch (error) {
-      console.error(error)
-    }
+  if (!token) {
+    console.error("No hay token de autenticación");
+    return;
   }
+
+  const decoded: any = jwtDecode(token);
+  const userId = decoded.id;
+
+  // Limpiar los datos antes de enviar
+  const cleanData = {
+    bio: editData.bio?.trim() || null,
+    ubicacion: editData.ubicacion?.trim() || null,
+    nacimiento: editData.nacimiento || null,
+    telefono: editData.telefono?.trim() || null,
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/api/usuarios/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(cleanData),
+    });
+
+    if (!response.ok) throw new Error("Error al guardar los cambios");
+
+    console.log("Cambios guardados correctamente");
+    setIsEditing(false);
+  } catch (error) {
+    console.error("Error al guardar:", error);
+  }
+};
 
   const handleCancel = () => {
     setEditData({
@@ -108,6 +117,12 @@ export function AboutMeTab({ user, isOwnProfile }: AboutMeTabProps) {
       day: "numeric",
     })
   }
+
+  const handleOnPlacesChanged = () => {
+    const places = inputRef.current?.getPlaces()
+
+  }
+
 
   return (
     <div className="space-y-6">
@@ -186,11 +201,19 @@ export function AboutMeTab({ user, isOwnProfile }: AboutMeTabProps) {
             </Label>
             {isEditing ? (
               <>
-                <Input
-                  value={editData.ubicacion || ""}
-                  onChange={(e) => setEditData({ ...editData, ubicacion: e.target.value })}
-                  placeholder="Ciudad, País"
-                />
+                {isLoaded &&
+                  <StandaloneSearchBox
+                    onLoad={(ref) => {
+                      inputRef.current = ref
+                    }}
+                    onPlacesChanged={handleOnPlacesChanged}
+                  >
+                    <Input
+                      value={editData.ubicacion || ""}
+                      onChange={(e) => setEditData({ ...editData, ubicacion: e.target.value })}
+                      placeholder="Ciudad, País"
+                    />
+                  </StandaloneSearchBox>}
                 {errors.ubicacion && <p className="text-sm text-red-500">{errors.ubicacion}</p>}
               </>
             ) : (
@@ -199,27 +222,27 @@ export function AboutMeTab({ user, isOwnProfile }: AboutMeTabProps) {
           </div>
 
           {/* Teléfono */}
-          
-            <div className="space-y-2">
-              <Label className="text-sm font-bold text-gray-900 flex items-center gap-2">
-                <Phone className="w-4 h-4" />
-                Teléfono
-              </Label>
-              {isEditing ? (
-                <>
-                  <Input
-                    type="tel"
-                    value={editData.telefono || ""}
-                    onChange={(e) => setEditData({ ...editData, telefono: e.target.value })}
-                    placeholder="+54 9 11 1234 5678"
-                  />
-                  {errors.telefono && <p className="text-sm text-red-500">{errors.telefono}</p>}
-                </>
-              ) : (
-                <p className="text-gray-600">{user.telefono}</p>
-              )}
-            </div>
-          
+
+          <div className="space-y-2">
+            <Label className="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <Phone className="w-4 h-4" />
+              Teléfono
+            </Label>
+            {isEditing ? (
+              <>
+                <Input
+                  type="tel"
+                  value={editData.telefono || ""}
+                  onChange={(e) => setEditData({ ...editData, telefono: e.target.value })}
+                  placeholder="+54 9 11 1234 5678"
+                />
+                {errors.telefono && <p className="text-sm text-red-500">{errors.telefono}</p>}
+              </>
+            ) : (
+              <p className="text-gray-600">{user.telefono}</p>
+            )}
+          </div>
+
 
           {/* Fecha de registro */}
           <div className="space-y-2">
