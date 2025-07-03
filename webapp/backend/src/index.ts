@@ -2,13 +2,13 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
-import {connectDB} from './config/db.ts';
+import {connectDB} from './config/db';
 import authRutes from './routes/auth.routes'
 import publicacionesRoutes from './routes/publicaciones.routes';
 import publicacionesFKRoutes from './routes/publicaciones_fk.routes';
-import usuariosRoutes from './routes/user.routes.ts'
-import testimoniosRoutes from './routes/testimonios.route.ts'
-import guardarRoutes from './routes/guardar.routes.ts';
+import usuariosRoutes from './routes/user.routes'
+import testimoniosRoutes from './routes/testimonios.route'
+import guardarRoutes from './routes/guardar.routes';
 import type { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 
