@@ -18,27 +18,36 @@ interface User {
 export function Header() {
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false)
   const [user, setUser] = useState<User>()
-  const token = Cookies.get('token')
-  const decoded: any = jwtDecode(token!!);
-  const userId = decoded.id;
+ 
   
- useEffect(() => {
-    const fetchUser = async (userId: string) => {
-      try {
-        const API_URL = process.env.NEXT_PUBLIC_API_URL
-        const res = await fetch(`${API_URL}/api/usuarios/${userId}`)
-        if (!res.ok) throw new Error('Error al cargar datos del usuario')
-        const userData: User = await res.json()
-        setUser(userData)
-      } catch (err) {
-        console.error(err)
-      }
-    }
+   useEffect(() => {
+    const token = Cookies.get("token")
 
-    if (userId) {
-      fetchUser(userId)
+    if (!token) return
+
+    try {
+      const decoded: any = jwtDecode(token)
+      const userId = decoded.id
+
+      const fetchUser = async (userId: string) => {
+        try {
+          const API_URL = process.env.NEXT_PUBLIC_API_URL
+          const res = await fetch(`${API_URL}/api/usuarios/${userId}`)
+          if (!res.ok) throw new Error("Error al cargar datos del usuario")
+          const userData: User = await res.json()
+          setUser(userData)
+        } catch (err) {
+          console.error(err)
+        }
+      }
+
+      if (userId) {
+        fetchUser(userId)
+      }
+    } catch (error) {
+      console.error("Token inválido", error)
     }
-  }, [userId])
+  }, [])
   return (
     <>
       <header className="flex justify-center sticky top-0 z-50 shadow-lg bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
