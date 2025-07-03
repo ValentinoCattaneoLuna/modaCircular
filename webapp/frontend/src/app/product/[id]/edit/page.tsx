@@ -3,7 +3,7 @@ import { Header } from "@/components/header"
 import { EditProductForm } from "@/components/edit-product-form"
 import Cookies from 'js-cookie'
 import { jwtDecode } from 'jwt-decode';
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { useEffect, useState } from "react";
 import { Toaster } from 'sonner';
 import {
@@ -47,8 +47,10 @@ interface UsuarioBackend {
   apellido: string
 }
 
-export default function EditProductPage({ params }: EditProductPageProps) {
+export default function EditProductPage(/*{ params }: EditProductPageProps*/) {
   const router = useRouter();
+  const { id } = useParams() as { id: string }
+
   const [producto, setProducto] = useState<ProductoBackend>()
   const [usuario, setUsuario] = useState<UsuarioBackend>()
   const [loading, setLoading] = useState(true)
@@ -80,7 +82,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
 
       const fetchData = async () => {
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/publicaciones/${params.id}`)
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/publicaciones/${id}`)
           if (!res.ok) throw new Error('Error al cargar la publicación')
           const data: ProductoBackend = await res.json()
 
@@ -105,7 +107,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
       console.error("Error al decodificar el token:", err);
       router.push('/login');
     }
-  }, [params.id, router]);
+  }, [id, router]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -124,7 +126,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href={`/product/${params.id}`}>Producto</BreadcrumbLink>
+              <BreadcrumbLink href={`/product/${id}`}>Producto</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
