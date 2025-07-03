@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react";
-
+import { Toaster } from 'sonner';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -28,7 +28,7 @@ interface ProductoBackend {
   imagenes: string
   estado: string
   talle: string
-  tipo_publicacion: "Venta" | "Donación" | "Intercambio"
+  tipo_publicacion: string
   categoria: string
   descripcion: string
   color: string
@@ -110,6 +110,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
+      <Toaster position="top-right"/>
 
       <main className="container mx-auto px-4 py-6 max-w-4xl">
         <Breadcrumb className="mb-6">

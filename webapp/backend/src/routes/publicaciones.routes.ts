@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { crearPublicacion, verPublicaciones, verPublicacionPorId, eliminarPublicacionPorId, editarPublicacionPorId} from "../controllers/publicaciones.controller";
 import { authenticate } from "../middleware/auth";
+import { uploadImages } from "../middleware/uploadImages";
 
 
 
@@ -19,6 +20,6 @@ router.get('/:id_publicacion',verPublicacionPorId)
 router.delete('/:id_publicacion',authenticate, eliminarPublicacionPorId)
 
 //ruta para editar publicacion por id
-router.put('/:id_publicacion',authenticate, editarPublicacionPorId)
+router.put('/:id_publicacion',authenticate,uploadImages, editarPublicacionPorId)
 
 export default router;
