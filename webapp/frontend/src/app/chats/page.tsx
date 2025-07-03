@@ -1,8 +1,20 @@
+'use client'
 import { Header } from "@/components/header"
 import { Card, CardContent } from "@/components/ui/card"
 import { MessageCircle } from "lucide-react"
-
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import Cookies from "js-cookie"
 export default function ChatsPage() {
+  const router = useRouter()
+  useEffect(() => {
+    const token = Cookies.get('token')
+    if (!token) {
+      router.push('/login')
+      return
+    } [router]
+  })
+  
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
