@@ -1,7 +1,7 @@
 "use client"
 
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -11,33 +11,35 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { X, Camera, Plus, AlertCircle, Save, Eye, Trash2 } from "lucide-react"
+import { X, Camera, AlertCircle, Save  } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import Cookies from "js-cookie"
+import { toast } from 'sonner';
 
 interface ProductoBackend {
-    id_publicacion: number
-    titulo: string
-    precio?: number
-    imagenes: string
-    estado: string
-    talle: string
-    tipo_publicacion: "Venta" | "Donación" | "Intercambio"
-    categoria: string
-    descripcion: string
-    color: string
-    id_usuario: number
-    nombre_usuario: string
-    apellido_usuario: string
-    fecha_publicacion: string
+  id_publicacion: number
+  titulo: string
+  precio?: number
+  imagenes: string
+  estado: string
+  talle: string
+  tipo_publicacion: string
+  categoria: string
+  descripcion: string
+  color: string
+  id_usuario: number
+  nombre_usuario: string
+  apellido_usuario: string
+  fecha_publicacion: string
 }
 interface UsuarioBackend {
 
-    id_usuario: number
-    username: string
-    avatar: string | null
-    telefono: string
-    nombre: string
-    apellido: string
+  id_usuario: number
+  username: string
+  avatar: string | null
+  telefono: string
+  nombre: string
+  apellido: string
 }
 interface EditProductFormProps {
   product: ProductoBackend
@@ -61,11 +63,25 @@ interface FormErrors {
 
 export function EditProductForm({ product }: EditProductFormProps) {
   const router = useRouter()
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false)
+  const [tiposPublicacion, setTiposPublicacion] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [talles, setTalles] = useState([]);
   const [errors, setErrors] = useState<FormErrors>({})
-  const [newTag, setNewTag] = useState("")
-
-  const [formData, setFormData] = useState({
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [formData, setFormData] = useState<{
+    titulo: string
+    descripcion: string
+    precio: string
+    imagenes: (string | File)[]
+    tipo_publicacion: string
+    categoria: string
+    talle: string
+    estado: string
+    color: string
+  }>({
     titulo: product.titulo,
     descripcion: product.descripcion,
     precio: product.precio?.toString() || "0",
@@ -75,11 +91,11 @@ export function EditProductForm({ product }: EditProductFormProps) {
     talle: product.talle,
     estado: product.estado,
     color: product.color,
-   
-    //status: product.status,
   })
+    console.log("🧾 product.imagenes:", product.imagenes);
 
   // Validaciones
+
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
 
@@ -102,7 +118,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
     }
 
     // Precio (solo para ventas)
-    if (formData.tipo_publicacion === "Venta") {
+    if (formData.tipo_publicacion === "1") {
       const precio = Number.parseFloat(formData.precio)
       if (!formData.precio || isNaN(precio)) {
         newErrors.precio = "El precio es obligatorio para productos en venta"
@@ -131,44 +147,61 @@ export function EditProductForm({ product }: EditProductFormProps) {
     if (!formData.color.trim()) {
       newErrors.color = "El color es obligatorio"
     }
-
-    // Medidas (validación numérica)
-    // const measurements: FormErrors["measurements"] = {}
-    // if (
-    //   formData.measurements.bust &&
-    //   (isNaN(Number(formData.measurements.bust)) || Number(formData.measurements.bust) <= 0)
-    // ) {
-    //   measurements.bust = "Debe ser un número válido mayor a 0"
-    // }
-    // if (
-    //   formData.measurements.waist &&
-    //   (isNaN(Number(formData.measurements.waist)) || Number(formData.measurements.waist) <= 0)
-    // ) {
-    //   measurements.waist = "Debe ser un número válido mayor a 0"
-    // }
-    // if (
-    //   formData.measurements.length &&
-    //   (isNaN(Number(formData.measurements.length)) || Number(formData.measurements.length) <= 0)
-    // ) {
-    //   measurements.length = "Debe ser un número válido mayor a 0"
-    // }
-    // if (Object.keys(measurements).length > 0) {
-    //   newErrors.measurements = measurements
-    // }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
+  async function getPublicacionesFKData(url: string) {
+    try {
+      const response = await fetch(`${API_URL}${url}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error al obtener FK DATA:", error);
+      return null;
+    }
+  }
+  useEffect(() => {
+    async function fetchFKData() {
+      const [tipos, cats, sizes] = await Promise.all([
+        getPublicacionesFKData('/api/publicaciones_fk/tipo_publicacion'),
+        getPublicacionesFKData('/api/publicaciones_fk/categorias'),
+        getPublicacionesFKData('/api/publicaciones_fk/talles')
+
+      ]);
+      if (tipos) setTiposPublicacion(tipos);
+      if (cats) setCategorias(cats);
+      if (sizes) setTalles(sizes);
+    }
+
+    fetchFKData();
+  }, []);
+
+
   const handleImageUpload = () => {
-    if (formData.imagenes.length >= 6) return
-    const newImage = `/placeholder.svg?height=300&width=300&text=Nueva+Imagen+${formData.imagenes.length + 1}`
+    if (formData.imagenes.length >= 6) return;
+    fileInputRef.current?.click();
+  };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const filesArray = Array.from(files);
+
+    // Validar cantidad total
+    const total = formData.imagenes.length + filesArray.length;
+    if (total > 6) {
+      toast.error("No puedes subir más de 6 imágenes");
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
-      imagenes: [...prev.imagenes, newImage],
-    }))
-  }
-
+      imagenes: [...prev.imagenes, ...filesArray],
+    }));
+  };
   const removeImage = (index: number) => {
     setFormData((prev) => ({
       ...prev,
@@ -183,70 +216,81 @@ export function EditProductForm({ product }: EditProductFormProps) {
     setFormData((prev) => ({ ...prev, imagenes: newImages }))
   }
 
-  // const addTag = () => {
-  //   if (newTag.trim() && !formData.tags.includes(newTag.trim().toLowerCase()) && formData.tags.length < 10) {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       tags: [...prev.tags, newTag.trim().toLowerCase()],
-  //     }))
-  //     setNewTag("")
-  //   }
-  // }
 
-  // const removeTag = (tagToRemove: string) => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     tags: prev.tags.filter((tag) => tag !== tagToRemove),
-  //   }))
-  // }
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    if (!validateForm()) {
+    // Validación básica
+    if (!formData.titulo.trim()) {
+      setErrors({ ...errors, titulo: "El título es obligatorio" })
       return
     }
 
     setIsLoading(true)
 
     try {
-      // Simular llamada a la API
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      const form = new FormData()
 
-      console.log("Producto actualizado:", formData)
+      form.append("id_tipo_publicacion", formData.tipo_publicacion)
+      form.append("id_categoria", formData.categoria)
+      form.append("id_talle", formData.talle)
+      form.append("titulo", formData.titulo)
+      form.append("descripcion", formData.descripcion)
+      form.append("precio", formData.precio || "0")
+      form.append("estado", formData.estado)
+      form.append("color", formData.color)
 
-      // Redirigir al producto actualizado
+      // Imágenes: separar entre nuevas y existentes
+      for (const img of formData.imagenes) {
+        if (typeof img === "string" && !img.startsWith("blob:") && !img.startsWith("data:")) {
+          form.append("imagenes_existentes[]", img); // URL de imagen ya almacenada
+        } else if (img instanceof File) {
+          form.append("imagenes", img); // archivo nuevo
+        }
+      }
+      const totalImagenes = formData.imagenes.length;
+      if (totalImagenes > 6) {
+        toast.error("No puedes guardar más de 6 imágenes.");
+        setIsLoading(false);
+        return;
+      }
+      if (totalImagenes === 0) {
+        toast.error("Debes agregar al menos una imagen.");
+        setIsLoading(false);
+        return;
+      }
+
+      const token = Cookies.get("token")
+
+      const res = await fetch(`${API_URL}/api/publicaciones/${product.id_publicacion}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: form,
+      })
+
+      if (!res.ok) throw new Error("Error al actualizar la publicación")
+
+      toast.success("¡Publicación actualizada con éxito!")
       router.push(`/product/${product.id_publicacion}`)
-    } catch (error) {
-      console.error("Error al actualizar producto:", error)
+
+    } catch (err) {
+      console.error(err)
+      toast.error("Hubo un error al guardar los cambios.")
     } finally {
       setIsLoading(false)
     }
+
   }
 
-  const handlePreview = () => {
-    router.push(`/product/${product.id_publicacion}`)
-  }
 
-  const handleDelete = async () => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.")) {
-      setIsLoading(true)
-      try {
-        // Simular eliminación
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        router.push("/profile")
-      } catch (error) {
-        console.error("Error al eliminar producto:", error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-  }
+
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Información básica */}
-      <Card className="bg-white shadow-lg border-0"> 
+      <Card className="bg-white shadow-lg border-0">
         <CardHeader>
           <CardTitle>Información básica</CardTitle>
         </CardHeader>
@@ -254,19 +298,28 @@ export function EditProductForm({ product }: EditProductFormProps) {
           {/* Tipo de publicación */}
           <div className="space-y-2">
             <Label className="text-sm block font-bold text-gray-900 mb-1">Tipo de publicación *</Label>
+            <span className="text-[0.7rem] font-bold text-gray-500"> Tipo anterior: {product.tipo_publicacion}</span>
+
             <Select
               value={formData.tipo_publicacion}
-              onValueChange={(value: "Venta" | "Donación" | "Intercambio") =>
-                setFormData((prev) => ({ ...prev, tipo_publicacion: value, precio: value === "Venta" ? prev.precio : "0" }))
-              }
+              onValueChange={(value) => setFormData({ ...formData, tipo_publicacion: value })}
+              required
             >
-              <SelectTrigger>
-                <SelectValue />
+              <SelectTrigger className="bg-white cursor-pointer border-gray-300 focus:ring-[#22c55e]">
+                <SelectValue placeholder="¿Qué quieres hacer con tu prenda?" />
               </SelectTrigger>
-              <SelectContent className="w-full border border-gray-300 rounded-md bg-white text-gray-900 shadow-md">
-                <SelectItem value="Venta" className="border-b border-gray-200 py-2">Vender</SelectItem>
-                <SelectItem value="Donación" className="border-b border-gray-200 py-2">Regalar</SelectItem>
-                <SelectItem value="Intercambio" className="border-b border-gray-200 py-2">Intercambiar</SelectItem>
+              <SelectContent className="bg-white">
+                {tiposPublicacion.map((tipo: any) => (
+                  <SelectItem
+                    className="bg-white hover:bg-green-50 cursor-pointer"
+                    key={tipo.id_tipo_publicacion}
+                    value={String(tipo.id_tipo_publicacion)}
+                  >
+                    {tipo.tipo_publicacion}
+                  </SelectItem>
+
+                ))}
+
               </SelectContent>
             </Select>
           </div>
@@ -310,15 +363,16 @@ export function EditProductForm({ product }: EditProductFormProps) {
           </div>
 
           {/* Precio (solo para ventas) */}
-          {formData.tipo_publicacion === "Venta" && (
+          {formData.tipo_publicacion === '1' && (
             <div className="space-y-2">
-              <Label className="block text-sm font-bold text-gray-900 mb-1"  htmlFor="precio">Precio ($) *</Label>
+              <Label className="block text-sm font-bold text-gray-900 mb-1" htmlFor="precio">Precio ($) *</Label>
+
+              <span className="text-[0.7rem] font-bold text-gray-500"> Precio anterior: ${product.precio}</span>
               <Input
                 id="precio"
                 type="number"
                 step="0.01"
                 min="0"
-                max="10000"
                 value={formData.precio}
                 onChange={(e) => setFormData((prev) => ({ ...prev, precio: e.target.value }))}
                 placeholder="0.00"
@@ -345,7 +399,11 @@ export function EditProductForm({ product }: EditProductFormProps) {
             {formData.imagenes.map((image, index) => (
               <div key={index} className="relative aspect-square group">
                 <img
-                  src={image || "/placeholder.svg"}
+                  src={
+                    typeof image === "string"
+                      ? image
+                      : URL.createObjectURL(image)
+                  }
                   alt={`Producto ${index + 1}`}
                   className="w-full h-full object-cover rounded-lg border-2 border-gray-200"
                 />
@@ -368,15 +426,23 @@ export function EditProductForm({ product }: EditProductFormProps) {
               </div>
             ))}
             {formData.imagenes.length < 6 && (
-            <div
-              onClick={handleImageUpload}
-              className="flex items-center justify-center aspect-square w-full border-2 border-dashed border-gray-400 rounded-lg hover:border-green-500 hover:bg-gray-100 cursor-pointer"
-            >
-              <div className="flex flex-col items-center space-y-2 text-center">
-                <Camera className="w-10 h-10 text-green-600" />
-                <span className="text-sm text-gray-800 font-medium">Agregar más fotos</span>
+              <div
+                onClick={handleImageUpload}
+                className="flex items-center justify-center aspect-square w-full border-2 border-dashed border-gray-400 rounded-lg hover:border-green-500 hover:bg-gray-100 cursor-pointer"
+              >
+                <div className="flex flex-col items-center space-y-2 text-center">
+                  <Camera className="w-10 h-10 text-green-600" />
+                  <span className="text-sm text-gray-800 font-medium">Agregar más fotos</span>
+                </div>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  multiple
+                  accept="image/*"
+                  className="hidden"
+                />
               </div>
-            </div>
 
             )}
           </div>
@@ -399,43 +465,53 @@ export function EditProductForm({ product }: EditProductFormProps) {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="text-sm block font-bold text-gray-900 mb-1">Categoría *</Label>
+              <span className="text-[0.7rem] font-bold text-gray-500"> Categoria anterior: {product.categoria}</span>
               <Select
                 value={formData.categoria}
-                onValueChange={(value) => setFormData((prev) => ({ ...prev, categoria: value }))}
+                onValueChange={(value) => setFormData({ ...formData, categoria: value })}
+                required
+
               >
-                <SelectTrigger className={errors.categoria ? "border-red-500" : ""}>
+                <SelectTrigger className="bg-white cursor-pointer border-gray-300 focus:ring-[#22c55e]">
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
-                <SelectContent className="w-full border border-gray-300 rounded-md bg-white text-gray-900 shadow-md">
-                  <SelectItem value="vestidos" className="border-b border-gray-200 py-2">Vestidos</SelectItem>
-                  <SelectItem value="camisetas" className="border-b border-gray-200 py-2">Camisetas</SelectItem>
-                  <SelectItem value="pantalones" className="border-b border-gray-200 py-2">Pantalones</SelectItem>
-                  <SelectItem value="chaquetas" className="border-b border-gray-200 py-2">Chaquetas</SelectItem>
-                  <SelectItem value="zapatos" className="border-b border-gray-200 py-2">Zapatos</SelectItem>
-                  <SelectItem value="accesorios" className="border-b border-gray-200 py-2">Accesorios</SelectItem>
-                  <SelectItem value="bolsos" className="border-b border-gray-200 py-2">Bolsos</SelectItem>
+                <SelectContent className="bg-white">
+                  {categorias.map((cat: any) => (
+                    <SelectItem
+                      key={cat.id_categoria}
+                      value={String(cat.id_categoria)}
+
+                      className="bg-white hover:bg-green-50 cursor-pointer "
+                    >
+                      {cat.categoria}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               {errors.categoria && <p className="text-sm text-red-500">{errors.categoria}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm block font-bold text-gray-900 mb-1">Talla *</Label>
+              <Label className="text-sm block font-bold text-gray-900 mb-1">Talle *</Label>
+              <span className="text-[0.7rem] font-bold text-gray-500"> Talle anterior: {product.talle}</span>
               <Select
                 value={formData.talle}
-                onValueChange={(value) => setFormData((prev) => ({ ...prev, talle: value }))}
+                onValueChange={(value) => setFormData({ ...formData, talle: value })}
+                required
               >
-                <SelectTrigger className={errors.talle ? "border-red-500" : ""}>
+                <SelectTrigger className="bg-white cursor-pointer border-gray-300 focus:ring-[#22c55e]">
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
-                <SelectContent className="w-full border border-gray-300 rounded-md bg-white text-gray-900 shadow-md">
-                  <SelectItem value="xs" className="border-b border-gray-200 py-2">XS</SelectItem>
-                  <SelectItem value="s" className="border-b border-gray-200 py-2">S</SelectItem>
-                  <SelectItem value="m" className="border-b border-gray-200 py-2">M</SelectItem>
-                  <SelectItem value="l" className="border-b border-gray-200 py-2">L</SelectItem>
-                  <SelectItem value="xl" className="border-b border-gray-200 py-2">XL</SelectItem>
-                  <SelectItem value="xxl" className="border-b border-gray-200 py-2">XXL</SelectItem>
-                  <SelectItem value="unica" className="border-b border-gray-200 py-2">Talla única</SelectItem>
+                <SelectContent className="bg-white">
+                  {talles.map((talle: any) => (
+                    <SelectItem
+                      key={talle.id_talle}
+                      value={String(talle.id_talle)}
+                      className="bg-white hover:bg-green-50 cursor-pointer"
+                    >
+                      {talle.talle}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               {errors.talle && <p className="text-sm text-red-500">{errors.talle}</p>}
@@ -443,19 +519,20 @@ export function EditProductForm({ product }: EditProductFormProps) {
 
             <div className="space-y-2">
               <Label className="text-sm block font-bold text-gray-900 mb-1">Estado *</Label>
+              <span className="text-[0.7rem] font-bold text-gray-500"> Estado anterior: {product.estado}</span>
               <Select
                 value={formData.estado}
-                onValueChange={(value) => setFormData((prev) => ({ ...prev, estado: value }))}
+                onValueChange={(value) => setFormData({ ...formData, estado: value })}
+                required
               >
-                <SelectTrigger className={errors.estado ? "border-red-500" : ""}>
+                <SelectTrigger className="bg-white hover:cursor-pointer border-gray-300 focus:ring-[#22c55e]">
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
-                <SelectContent className="w-full border border-gray-300 rounded-md bg-white text-gray-900 shadow-md">
-                  <SelectItem value="nuevo" className="border-b border-gray-200 py-2">Nuevo con etiquetas</SelectItem>
-                  <SelectItem value="como-nuevo" className="border-b border-gray-200 py-2">Como nuevo</SelectItem>
-                  <SelectItem value="muy-bueno" className="border-b border-gray-200 py-2">Muy bueno</SelectItem>
-                  <SelectItem value="bueno" className="border-b border-gray-200 py-2">Bueno</SelectItem>
-                  <SelectItem value="regular" className="border-b border-gray-200 py-2">Regular</SelectItem>
+                <SelectContent className="bg-white ">
+                  <SelectItem value="Nuevo" className="bg-white hover:bg-green-50 cursor-pointer">Nuevo</SelectItem>
+                  <SelectItem value="Como nuevo" className="bg-white hover:bg-green-50 cursor-pointer">Como nuevo</SelectItem>
+                  <SelectItem value="Bueno" className="bg-white hover:bg-green-50 cursor-pointer">Bueno</SelectItem>
+                  <SelectItem value="Detalles" className="bg-white hover:bg-green-50 cursor-pointer">Detalles</SelectItem>
                 </SelectContent>
               </Select>
               {errors.estado && <p className="text-sm text-red-500">{errors.estado}</p>}
@@ -463,6 +540,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
 
             <div className="space-y-2">
               <Label htmlFor="color" className="text-sm block font-bold text-gray-900 mb-1">Color *</Label>
+              <span className="text-[0.7rem] font-bold text-gray-500"> Color anterior: {product.color}</span>
               <Input
                 id="color"
                 value={formData.color}
@@ -473,141 +551,19 @@ export function EditProductForm({ product }: EditProductFormProps) {
               {errors.color && <p className="text-sm text-red-500">{errors.color}</p>}
             </div>
 
-            
 
-         
+
+
           </div>
-
           <Separator />
 
-          {/* Medidas */}
-          {/* <div className="space-y-4">
-            <Label className="text-base font-medium">Medidas (cm)</Label>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="bust">Pecho</Label>
-                <Input
-                  id="bust"
-                  type="number"
-                  value={formData.measurements.bust}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      measurements: { ...prev.measurements, bust: e.target.value },
-                    }))
-                  }
-                  placeholder="92"
-                  className={errors.measurements?.bust ? "border-red-500" : ""}
-                />
-                {errors.measurements?.bust && <p className="text-sm text-red-500">{errors.measurements.bust}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="waist">Cintura</Label>
-                <Input
-                  id="waist"
-                  tipo_publicacion="number"
-                  value={formData.measurements.waist}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      measurements: { ...prev.measurements, waist: e.target.value },
-                    }))
-                  }
-                  placeholder="76"
-                  className={errors.measurements?.waist ? "border-red-500" : ""}
-                />
-                {errors.measurements?.waist && <p className="text-sm text-red-500">{errors.measurements.waist}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="length">Largo</Label>
-                <Input
-                  id="length"
-                  tipo_publicacion="number"
-                  value={formData.measurements.length}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      measurements: { ...prev.measurements, length: e.target.value },
-                    }))
-                  }
-                  placeholder="110"
-                  className={errors.measurements?.length ? "border-red-500" : ""}
-                />
-                {errors.measurements?.length && <p className="text-sm text-red-500">{errors.measurements.length}</p>}
-              </div>
-            </div>
-          </div> */}
-
-          <Separator />
-
-          {/* Tags */}
-          {/* <div className="space-y-4">
-            <Label className="text-base font-medium">Etiquetas</Label>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {formData.tags.map((tag, index) => (
-                <Badge key={index} variant="secondary" className="flex items-center gap-1">
-                  #{tag}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    talle="icon"
-                    className="h-4 w-4 p-0 hover:bg-transparent"
-                    onClick={() => removeTag(tag)}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </Badge>
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <Input
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-                placeholder="Agregar etiqueta"
-                onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
-                disabled={formData.tags.length >= 10}
-              />
-              <Button type="button" onClick={addTag} disabled={!newTag.trim() || formData.tags.length >= 10}>
-                <Plus className="w-4 h-4" />
-              </Button>
-            </div>
-            <p className="text-xs text-gray-500">Máximo 10 etiquetas</p>
-          </div> */}
         </CardContent>
       </Card>
 
-      {/* Estado de la publicación */}
-      {/* <Card>
-        <CardHeader>
-          <CardTitle>Estado de la publicación</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Select
-            value={formData.status}
-            onValueChange={(value: "activa" | "pausada" | "vendida") =>
-              setFormData((prev) => ({ ...prev, status: value }))
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="activa">Activa</SelectItem>
-              <SelectItem value="pausada">Pausada</SelectItem>
-              <SelectItem value="vendida">Vendida</SelectItem>
-            </SelectContent>
-          </Select>
-          <p className="text-sm text-gray-500 mt-2">
-            {formData.status === "activa" && "La publicación será visible para otros usuarios"}
-            {formData.status === "pausada" && "La publicación estará oculta temporalmente"}
-            {formData.status === "vendida" && "Marca el producto como vendido"}
-          </p>
-        </CardContent>
-      </Card> */}
 
       {/* Botones de acción */}
       <div className="flex flex-col sm:flex-row gap-4 justify-end">
-        
+
 
         <div className="flex  gap-2">
           <Button
@@ -622,7 +578,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
 
           <Button
             type="submit"
-             className="bg-primary-custom hover:bg-primary-custom/90 text-white cursor-pointer transition-all hover:scale-110 focus:scale-90"
+            className="bg-primary-custom hover:bg-primary-custom/90 text-white cursor-pointer transition-all hover:scale-110 focus:scale-90"
             disabled={isLoading}
           >
             {isLoading ? (
