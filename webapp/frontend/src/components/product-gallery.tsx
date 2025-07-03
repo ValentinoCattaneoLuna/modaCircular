@@ -5,17 +5,34 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight, Expand, Heart, Share2 } from "lucide-react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { useFavorito } from "@/hooks/useToggleFavorito "
+interface ProductoBackend {
+  id_publicacion: number
+  titulo: string
+  precio: number
+  imagenes: string
+  estado: string
+  talle: string
+  tipo_publicacion: "Venta" | "Donación" | "Intercambio"
+  categoria: string
+  descripcion: string
+  color: string
+  id_usuario: number
+  nombre_usuario: string
+  apellido_usuario: string
+  fecha_publicacion: string
+}
 
 interface ProductGalleryProps {
+  product: ProductoBackend
   images: string[]
   title: string
 }
 
-export function ProductGallery({ images, title }: ProductGalleryProps) {
+export function ProductGallery({ images, title, product }: ProductGalleryProps) {
   const [currentImage, setCurrentImage] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [isLiked, setIsLiked] = useState(false)
-
+  const { isFavorito, toggleFavorito, loading } = useFavorito(product.id_publicacion);
   const nextImage = () => {
     setCurrentImage((prev) => (prev + 1) % images.length)
   }
@@ -50,7 +67,7 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
             className="max-w-full max-h-full object-contain"
             src={images[currentImage] || "/placeholder.svg"}
             alt={`${title} - Imagen ${currentImage + 1}`}
-           
+
           />
 
           {/* Overlay con botones */}
@@ -82,10 +99,11 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className={`bg-white/80 hover:bg-white transition-colors ${isLiked ? "text-red-500" : "text-gray-800"}`}
-                onClick={() => setIsLiked(!isLiked)}
+                className={`bg-white/80 hover:bg-white transition-colors ${isFavorito ? "text-red-500" : "text-gray-800"}`}
+                onClick={toggleFavorito} disabled={loading}
+
               >
-                <Heart className={`w-5 h-5 ${isLiked ? "fill-current" : ""}`} />
+                <Heart className={`w-5 h-5 ${isFavorito ? "fill-current" : ""}`} />
               </Button>
               <Button
                 variant="ghost"
@@ -122,16 +140,15 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
             <button
               key={index}
               onClick={() => setCurrentImage(index)}
-              className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
-                currentImage === index ? "border-[#22c55e]" : "border-gray-200 hover:border-gray-300"
-              }`}
+              className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${currentImage === index ? "border-[#22c55e]" : "border-gray-200 hover:border-gray-300"
+                }`}
             >
               <img
                 src={image || "/placeholder.svg"}
                 alt={`${title} - Miniatura ${index + 1}`}
                 className="w-full h-full object-cover "
               />
-              {currentImage === index && <div className="absolute inset-0 bg-primary-custom/20"  />}
+              {currentImage === index && <div className="absolute inset-0 bg-primary-custom/20" />}
             </button>
           ))}
         </div>
@@ -139,9 +156,9 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
 
       {/* Modal de pantalla completa */}
       <Dialog open={isFullscreen} onOpenChange={setIsFullscreen}>
-                <DialogContent className="max-w-4xl w-full h-[90vh] p-0">
+        <DialogContent className="max-w-4xl w-full h-[90vh] p-0">
           <div className="relative w-full h-full bg-black flex items-center justify-center">
-            
+
             <div className="w-[70%] aspect-[4/5] max-h-[90%] flex items-center justify-center">
               <img
                 src={images[currentImage] || "/placeholder.svg"}
