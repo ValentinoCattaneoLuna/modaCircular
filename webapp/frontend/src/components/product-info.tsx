@@ -98,7 +98,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-gray-700 leading-relaxed">{product.descripcion}</p>
+          <p className="text-gray-700 leading-relaxed wrap-break-word ">{product.descripcion}</p>
 
           {/* Tags */}
           {/* {product.tags.length > 0 && (
