@@ -14,7 +14,7 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { LoaderValidation } from '@/components/loader-validation';
-
+import { Toaster } from 'sonner';
 import { useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -47,6 +47,8 @@ interface UsuarioBackend {
     telefono: string
     nombre: string
     apellido: string
+    ubicacion: string 
+    joinDate: string
 }
 
 
@@ -119,6 +121,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     return (
         <div className="min-h-screen bg-gray-50">
             <Header />
+            <Toaster position="top-right"/>
 
             <main className="container mx-auto px-4 py-6 max-w-7xl">
                 {/* Breadcrumb */}
@@ -145,7 +148,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                         {producto ? (
                             <>
                                 <ProductInfo product={producto}  />
-                                <ProductActions product={producto} />
+                                <ProductActions user={usuario!!} product={producto} />
                                 <SellerInfo
                                     seller={usuario ? {
                                         id_usuario: usuario.id_usuario,
@@ -153,14 +156,18 @@ export default function ProductPage({ params }: ProductPageProps) {
                                         avatar: usuario.avatar,
                                         telefono: usuario.telefono,
                                         nombre: producto?.nombre_usuario || '',
-                                        apellido: producto?.apellido_usuario || ''
+                                        apellido: producto?.apellido_usuario || '',
+                                        ubicacion: usuario.ubicacion || '',
+                                        joinDate: usuario.joinDate || ''
                                     } : {
                                         id_usuario: 0,
                                         username: '',
                                         avatar: null,
                                         telefono: '',
                                         nombre: '',
-                                        apellido: ''
+                                        apellido: '',
+                                        ubicacion: '',
+                                        joinDate: ''
                                     }}
                                 />
 
