@@ -137,7 +137,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 ">
                     {/* Galería de imágenes */}
                     <div className="lg:col-span-2 ">
-                        {producto ? <ProductGallery images={imagenes} title={producto.titulo} /> : <div>Cargando galería...</div>}
+                        {producto ? <ProductGallery product={producto} images={imagenes} title={producto.titulo} /> : <div>Cargando galería...</div>}
                     </div>
 
                     {/* Información del producto y acciones */}
