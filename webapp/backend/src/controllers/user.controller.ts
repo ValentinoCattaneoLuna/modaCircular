@@ -82,43 +82,60 @@ export const verUsuarioPorUsername = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Error al obtener el usuario' });
     }
 };
-
 export const actualizarUsuarioId = async (req: AuthenticatedRequest, res: Response) => {
-    
-    const connection = await pool.getConnection();
-    const { bio, nacimiento, telefono,ubicacion } = req.body
+  const connection = await pool.getConnection();
+  const { bio, nacimiento, telefono, ubicacion } = req.body;
 
-    if (!bio || !nacimiento || !ubicacion  || !telefono) {
-      res.status(400).json({ error: 'Faltan campos obligatorios' });
-      return
+  const id_usuario = req.user?.id;
+
+  if (!id_usuario) {
+    res.status(401).json({ error: 'No autenticado' });
+    return;
+  }
+
+  try {
+    await connection.beginTransaction();
+
+    const campos: string[] = [];
+    const valores: any[] = [];
+
+    if (bio !== undefined) {
+      campos.push("bio = ?");
+      valores.push(bio);
     }
 
-
-    try {
-        
-        const id_usuario = (req as any).user.id;
-
-
-        await connection.beginTransaction();
-        const [result]: any  = await connection.execute(
-            `
-            UPDATE Usuarios 
-            SET nacimiento = ?, telefono = ?, ubicacion = ?, bio = ?
-            WHERE id_usuario = ?
-            `,
-            [nacimiento,telefono,ubicacion,bio,id_usuario]
-        )
-        await connection.commit();
-        res.status(200).json({ message: 'Usuario actualizado con exito'})
-    }
-    catch (error) {
-        await connection.rollback()
-        res.status(500).json({ error: 'Error actualizando el usuario' })
-    }finally{
-        connection.release()
+    if (nacimiento !== undefined) {
+      campos.push("nacimiento = ?");
+      valores.push(nacimiento);
     }
 
+    if (telefono !== undefined) {
+      campos.push("telefono = ?");
+      valores.push(telefono);
+    }
 
+    if (ubicacion !== undefined) {
+      campos.push("ubicacion = ?");
+      valores.push(ubicacion);
+    }
 
+    if (campos.length === 0) {
+      res.status(400).json({ error: 'No se enviaron campos para actualizar' });
+      return;
+    }
 
-}
+    const sql = `UPDATE Usuarios SET ${campos.join(', ')} WHERE id_usuario = ?`;
+    valores.push(id_usuario);
+
+    await connection.execute(sql, valores);
+    await connection.commit();
+
+    res.status(200).json({ message: 'Usuario actualizado con éxito' });
+  } catch (error) {
+    await connection.rollback();
+    console.error("❌ Error actualizando usuario:", error);
+    res.status(500).json({ error: 'Error actualizando el usuario' });
+  } finally {
+    connection.release();
+  }
+};
