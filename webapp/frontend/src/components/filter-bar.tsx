@@ -12,7 +12,6 @@ export function FilterBar() {
     category: "",
     size: "",
     condition: "",
-    location: "",
   })
 
   const clearFilter = (key: string) => {
@@ -25,7 +24,6 @@ export function FilterBar() {
       category: "",
       size: "",
       condition: "",
-      location: "",
     })
   }
 
@@ -39,9 +37,9 @@ export function FilterBar() {
             <SelectValue placeholder="Tipo" />
           </SelectTrigger>
           <SelectContent className="bg-white">
-            <SelectItem value="venta"className="hover:bg-gray-200">Venta</SelectItem>
-            <SelectItem value="donacion"className="hover:bg-gray-200">Donación</SelectItem>
-            <SelectItem value="intercambio"className="hover:bg-gray-200">Intercambio</SelectItem>
+            <SelectItem value="Venta"className="hover:bg-gray-200">Venta</SelectItem>
+            <SelectItem value="Donación"className="hover:bg-gray-200">Donación</SelectItem>
+            <SelectItem value="Intercambio"className="hover:bg-gray-200">Intercambio</SelectItem>
           </SelectContent>
         </Select>
 
@@ -93,21 +91,6 @@ export function FilterBar() {
           </SelectContent>
         </Select>
 
-        <Select
-          value={filters.location}
-          onValueChange={(value) => setFilters((prev) => ({ ...prev, location: value }))}
-        >
-          <SelectTrigger className="w-[140px] bg-white">
-            <SelectValue placeholder="Ubicación" />
-          </SelectTrigger>
-          <SelectContent className="bg-white">
-            <SelectItem value="madrid" className="hover:bg-gray-200">Madrid</SelectItem>
-            <SelectItem value="barcelona" className="hover:bg-gray-200">Barcelona</SelectItem>
-            <SelectItem value="valencia" className="hover:bg-gray-200">Valencia</SelectItem>
-            <SelectItem value="sevilla" className="hover:bg-gray-200">Sevilla</SelectItem>
-            <SelectItem value="bilbao"className="hover:bg-gray-200">Bilbao</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
       {activeFilters.length > 0 && (
