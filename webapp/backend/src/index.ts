@@ -8,7 +8,7 @@ import publicacionesRoutes from './routes/publicaciones.routes';
 import publicacionesFKRoutes from './routes/publicaciones_fk.routes';
 import usuariosRoutes from './routes/user.routes.ts'
 import testimoniosRoutes from './routes/testimonios.route.ts'
-
+import guardarRoutes from './routes/guardar.routes.ts';
 import type { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 
@@ -41,7 +41,7 @@ app.use('/api/publicaciones', publicacionesRoutes);
 app.use('/api/publicaciones_fk', publicacionesFKRoutes);
 app.use('/api/usuarios', usuariosRoutes)
 app.use('/api/testimonios', testimoniosRoutes)
-
+app.use('/api/guardar', guardarRoutes);
 
 //verificaciones del servidor
 app.get('/api/health', (_req, res) => {

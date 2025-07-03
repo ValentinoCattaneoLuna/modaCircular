@@ -7,6 +7,7 @@ import { MessageCircle, Heart, Flag } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import {useFavorito} from "@/hooks/useToggleFavorito "
 
 interface ProductActionsProps {
   product: {
@@ -28,7 +29,7 @@ interface ProductActionsProps {
 }
 
 export function ProductActions({ product }: ProductActionsProps) {
-  const [isLiked, setIsLiked] = useState(false)
+  const { isFavorito, toggleFavorito, loading } = useFavorito(product.id_publicacion);
   const [message, setMessage] = useState("")
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
 
@@ -96,11 +97,11 @@ export function ProductActions({ product }: ProductActionsProps) {
 
           <Button
             variant="outline"
-            onClick={() => setIsLiked(!isLiked)}
-            className={` cursor-pointer w-full ${isLiked ? "text-red-500 border-red-500" : ""}`}
+                onClick={toggleFavorito} disabled={loading}
+            className={` cursor-pointer w-full ${isFavorito ? "text-red-500 border-red-500" : ""}`}
           >
-            <Heart className={`w-4 h-4 mr-2 ${isLiked ? "fill-current" : ""}`} />
-            {isLiked ? "Guardado" : "Guardar"}
+            <Heart className={`w-4 h-4 mr-2 ${isFavorito ? "fill-current" : ""}`} />
+            {isFavorito ? "Guardado" : "Guardar"}
           </Button>
         </div>
 

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Heart, MessageCircle, MapPin, Gift, ArrowRightLeft } from "lucide-react"
-
+import {useFavorito} from "@/hooks/useToggleFavorito "
 interface Product {
   id: number
   title: string
@@ -35,7 +35,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
-  const [isLiked, setIsLiked] = useState(false)
+  const { isFavorito, toggleFavorito, loading } = useFavorito(product.id);
 
   const handleContact = () => {
     if (!product.user.telefono) {
@@ -104,11 +104,11 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className={`absolute top-2 right-2 rounded-full ${isLiked ? "text-red-500" : "text-white"
+                className={`absolute top-2 right-2 rounded-full ${isFavorito ? "text-red-500" : "text-white"
                   } hover:bg-white/20`}
-                onClick={() => setIsLiked(!isLiked)}
+                onClick={toggleFavorito} disabled={loading}
               >
-                <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
+                <Heart className={`w-4 h-4 ${isFavorito ? "fill-current" : ""}`} />
               </Button>
             </div>
 
@@ -147,7 +147,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
               </div>
 
               <div className="flex items-center justify-between">
-                <Link href={`/user/username/${product.user.username}`}>
+                <Link href={`/user/username/${product.user.username }`}>
                   <div className="flex items-center space-x-2 cursor-pointer hover:opacity-80 ">
                     <Avatar className="w-6 h-6 ">
                       <AvatarImage src={product.user.avatar || "/placeholder.svg"} />
@@ -198,11 +198,11 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
           <Button
             variant="ghost"
             size="icon"
-            className={`absolute top-3 right-3 rounded-full bg-white/80 backdrop-blur-sm ${isLiked ? "text-red-500" : "text-gray-600"
+            className={`absolute top-3 right-3 rounded-full bg-white/80 backdrop-blur-sm ${isFavorito ? "text-red-500" : "text-gray-600"
               } hover:bg-white hover:scale-110 transition-all`}
-            onClick={() => setIsLiked(!isLiked)}
+            onClick={toggleFavorito} disabled={loading}
           >
-            <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
+            <Heart className={`w-4 h-4 ${isFavorito ? "fill-current" : ""}`} />
           </Button>
         </div>
 
