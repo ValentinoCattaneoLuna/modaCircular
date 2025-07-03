@@ -28,6 +28,7 @@ interface UsuarioBackend {
     username: string
     avatar: string | null
     telefono: string
+    ubicacion: string
 }
 
 export default function FeedPage() {
@@ -109,7 +110,7 @@ export default function FeedPage() {
                                         name: `${product.nombre_usuario} ${product.apellido_usuario}`,
                                         avatar: user.avatar || '', // Usar avatar si está disponible
                                         username: user.username || '', // Usar username del usuario
-                                        telefono:  user.telefono || ""   // Usar telefono si está disponible
+                                        telefono:  user.telefono || "",  // Usar telefono si está disponible
                                     },
                                     condition: product.estado,
                                     size: product.talle,
@@ -117,7 +118,7 @@ export default function FeedPage() {
                                     type: product.tipo_publicacion as 'Venta' | 'Donación' | 'Intercambio',
                                     category: product.categoria,
                                     color: product.color,
-                                    location: 'Argentina',
+                                    location: user.ubicacion || "",
                                 }}
                             />
                         )
