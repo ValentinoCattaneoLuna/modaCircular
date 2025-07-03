@@ -6,7 +6,8 @@ import { ProfileTabs } from "@/components/profile-tabs"
 import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode'
+
 interface IUsuario {
   id_usuario: number
   nombre: string
@@ -24,36 +25,44 @@ interface IUsuario {
 export default function ProfilePage() {
   const router = useRouter()
   const [currentUser, setCurrentUser] = useState<{ [key: string]: IUsuario }>({})
+  const [userId, setUserId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const token = Cookies.get('token')
-  const decoded: any = jwtDecode(token!!);
-  const userId = decoded.id;
+
   useEffect(() => {
- 
+    const token = Cookies.get('token')
+
     if (!token) {
       router.push('/login')
       return
     }
 
-    const fetchUserData = async (userId: string) => {
-      try {
-        const API_URL = process.env.NEXT_PUBLIC_API_URL
-        const res = await fetch(`${API_URL}/api/usuarios/${userId}`)
-        if (!res.ok) throw new Error('Error al cargar datos del usuario')
-        const userData: IUsuario = await res.json()
+    try {
+      const decoded: any = jwtDecode(token)
+      const id = decoded.id
+      setUserId(id)
 
-        setCurrentUser((prevUsers) => ({ ...prevUsers, [userId]: userData }))
-        setLoading(false)
-      } catch (err) {
-        console.error(err)
-        setError(true)
-        setLoading(false)
+      const fetchUserData = async (userId: string) => {
+        try {
+          const API_URL = process.env.NEXT_PUBLIC_API_URL
+          const res = await fetch(`${API_URL}/api/usuarios/${userId}`)
+          if (!res.ok) throw new Error('Error al cargar datos del usuario')
+          const userData: IUsuario = await res.json()
+
+          setCurrentUser((prevUsers) => ({ ...prevUsers, [userId]: userData }))
+        } catch (err) {
+          console.error(err)
+          setError(true)
+        } finally {
+          setLoading(false)
+        }
       }
-    }
 
-    if (userId) {
-      fetchUserData(userId)
+      if (id) fetchUserData(id)
+    } catch (err) {
+      console.error("Token inválido", err)
+      setError(true)
+      setLoading(false)
     }
   }, [router])
 
