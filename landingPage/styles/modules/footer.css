@@ -1,10 +1,24 @@
-footer {
-    background-color: var(--verdeMusgo);
-    padding: 1rem 0;
-    position: sticky;
-    bottom: 0;
-    z-index: -1;
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 }
+
+
+main {
+    flex: 1;
+}
+
+
+footer {
+    background-color: var(--verdeMusgo); 
+    padding: 1rem 0;
+    text-align: center;
+}
+
 
 .elementos_footer {
     display: flex;
@@ -19,12 +33,11 @@ footer {
     font-size: 1.2rem;
 }
 
-
 .logo_marca {
     height: 75px;
     width: auto;
-
 }
+
 .logo_marca img {
     height: 100%;
     width: auto;
